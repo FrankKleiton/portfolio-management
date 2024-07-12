@@ -5,25 +5,11 @@ export class Company {
 
   constructor(public name: string) {}
 
-  addOperationalCashFlow(year: number, amount: number) {
-    if (!this.cashFlows[year]) {
-      this.cashFlows[year] = new CashFlow();
-    }
-    this.cashFlows[year].setOperational(amount);
+  getCashFlow(year: number): any {
+    return this.cashFlows[year];
   }
 
-  getOperationalCashFlow(year: number) {
-    return this.cashFlows[year].getOperational();
-  }
-
-  addInvestingCashFlow(year: number, amount: number) {
-    if (!this.cashFlows[year]) {
-      this.cashFlows[year] = new CashFlow();
-    }
-    this.cashFlows[year].setInvesting(amount);
-  }
-
-  getInvestingCashFlow(year: number) {
-    return this.cashFlows[year].getInvesting();
+  addCashFlow(year: number, cashFlow: CashFlow) {
+    this.cashFlows[year] = cashFlow;
   }
 }

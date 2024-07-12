@@ -1,3 +1,4 @@
+import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
 
 /**
@@ -12,39 +13,46 @@ import { Company } from "./company";
  * - I need the Book Value CAGR
  */
 describe("Company", () => {
-  test("can create company", () => {
-    const company = new Company("Kepler Weber");
+  let company: Company;
 
+  beforeAll(() => {
+    company = new Company("Kepler Weber");
+  });
+
+  test("can get name", () => {
     expect(company.name).toBe("Kepler Weber");
   });
 
-  test("can add operational cash flow", () => {
+  test("can add cash flow", () => {
     const company = new Company("Kepler Weber");
 
-    company.addOperationalCashFlow(2021, 1000);
-    company.addOperationalCashFlow(2022, 1000);
+    for (let year = 2021; year < 2023; year++) {
+      const cashFlow = new CashFlow();
+      cashFlow.operational = 2000;
+      cashFlow.investing = 1000;
 
-    expect(company.getOperationalCashFlow(2021)).toBe(1000);
-    expect(company.getOperationalCashFlow(2022)).toBe(1000);
+      company.addCashFlow(year, cashFlow);
+
+      expect(company.getCashFlow(year)).toEqual(cashFlow);
+    }
+  });
+});
+
+describe("CashFlow", () => {
+  let cashFlow: CashFlow;
+
+  beforeAll(() => {
+    cashFlow = new CashFlow();
+    cashFlow.operational = 2000;
+    cashFlow.investing = 1000;
   });
 
-  test("can add operational cash flow", () => {
-    const company = new Company("Kepler Weber");
-
-    company.addOperationalCashFlow(2021, 1000);
-    company.addOperationalCashFlow(2022, 1000);
-
-    expect(company.getOperationalCashFlow(2021)).toBe(1000);
-    expect(company.getOperationalCashFlow(2022)).toBe(1000);
+  test("can add operational and investing cash flow", () => {
+    expect(cashFlow.operational).toBe(2000);
+    expect(cashFlow.investing).toBe(1000);
   });
 
-  test("can add investing cash flow", () => {
-    const company = new Company("Kepler Weber");
-
-    company.addInvestingCashFlow(2021, 1000);
-    company.addInvestingCashFlow(2022, 1000);
-
-    expect(company.getInvestingCashFlow(2021)).toBe(1000);
-    expect(company.getInvestingCashFlow(2022)).toBe(1000);
+  test("free cash flow equals operational minus investing", () => {
+    expect(cashFlow.freeCashFlow).toBe(1000);
   });
 });

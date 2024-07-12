@@ -1,20 +1,24 @@
 export class CashFlow {
-  private operational: number = 0;
-  private investing: number = 0;
+  private _operational: number = 0;
+  private _investing: number = 0;
 
-  setInvesting(amount: number) {
-    this.investing = amount;
+  set investing(amount: number) {
+    this._investing = amount;
   }
 
-  getInvesting() {
-    return this.investing;
+  get investing() {
+    return this._investing;
   }
 
-  setOperational(amount: number) {
-    this.operational = amount;
+  set operational(amount: number) {
+    this._operational = amount;
   }
 
-  getOperational() {
-    return this.operational;
+  get operational() {
+    return this._operational;
+  }
+
+  get freeCashFlow() {
+    return this._operational - this._investing;
   }
 }
