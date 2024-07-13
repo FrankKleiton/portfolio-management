@@ -1,15 +1,21 @@
 import { CashFlow } from "./cash-flow";
 
 export class Company {
-  private cashFlows: { [key: number]: CashFlow } = {};
+  private _cashFlows: CashFlow[] = [];
 
   constructor(public name: string) {}
 
-  getCashFlow(year: number): any {
-    return this.cashFlows[year];
+  addCashFlow(cashFlow: CashFlow) {
+    const i = this._cashFlows.findIndex((c) => cashFlow.sameYear(c));
+
+    if (i > -1) {
+      this._cashFlows[i] = cashFlow;
+    } else {
+      this._cashFlows.push(cashFlow);
+    }
   }
 
-  addCashFlow(year: number, cashFlow: CashFlow) {
-    this.cashFlows[year] = cashFlow;
+  get cashFlows() {
+    return this._cashFlows;
   }
 }
