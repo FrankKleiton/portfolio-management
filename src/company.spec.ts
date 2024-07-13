@@ -33,32 +33,28 @@ describe("Company", () => {
   });
 
   test("adding cashflow to a year overrides existent one", () => {
-    const cashflow1 = new CashFlow(2000, 1000, 2021);
-    const cashflow2 = new CashFlow(3000, 1000, 2021);
-    company.addCashFlow(cashflow1);
-    company.addCashFlow(cashflow2);
+    company.addCashFlow(new CashFlow(2000, 1000, 2021));
+    company.addCashFlow(new CashFlow(3000, 1000, 2021));
 
     expect(company.cashFlows).toHaveLength(1);
-    expect(company.cashFlows[0].equals(cashflow2)).toBeTruthy();
+    expect(
+      company.cashFlows[0].equals(new CashFlow(3000, 1000, 2021))
+    ).toBeTruthy();
   });
 });
 
 describe("Accounting", () => {
   test("calculate average free cash flow", () => {
     const company = new Company("Company");
-    const cashFlow1 = new CashFlow(1000, 500, 2021);
-    const cashFlow2 = new CashFlow(2000, 1000, 2022);
 
-    company.addCashFlow(cashFlow1);
-    company.addCashFlow(cashFlow2);
+    company.addCashFlow(new CashFlow(1000, 500, 2021));
+    company.addCashFlow(new CashFlow(2000, 1000, 2022));
 
     const accounting = new Accounting();
 
     const cashFlow = accounting.averageCashFlow(company);
 
-    const next = new CashFlow(1500, 750);
-
-    expect(cashFlow.equals(next)).toBeTruthy();
+    expect(cashFlow.equals(new CashFlow(1500, 750))).toBeTruthy();
   });
 });
 
@@ -86,18 +82,16 @@ describe("CashFlow", () => {
   });
 
   test("can sum cashflows", () => {
-    const cashFlow1 = new CashFlow(1000, 1000);
-
-    const cashFlow2 = new CashFlow(1000, 1000);
-
-    const next = new CashFlow(2000, 2000);
-
-    expect(cashFlow1.plus(cashFlow2).equals(next)).toBeTruthy();
+    expect(
+      new CashFlow(1000, 1000)
+        .plus(new CashFlow(1000, 1000))
+        .equals(new CashFlow(2000, 2000))
+    ).toBeTruthy();
   });
 
   test("can sum cashflows", () => {
-    const cashFlow1 = new CashFlow(1000, 1000);
-
-    expect(cashFlow1.divide(2).equals(new CashFlow(500, 500))).toBeTruthy();
+    expect(
+      new CashFlow(1000, 1000).divide(2).equals(new CashFlow(500, 500))
+    ).toBeTruthy();
   });
 });
