@@ -1,4 +1,5 @@
 import { Accounting } from "./accounting";
+import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
 
@@ -9,9 +10,15 @@ import { Company } from "./company";
  * - [v] I need the average Free Cash Flow
  * - [x] I need the Free Cash Flow CAGR
  * - [x] Companies (Kepler Weber, Taurus) have Balance Sheet Statement for each year
+ * - [v] Total asset = current asset + non current asset
+ * - [v] Total liabilities = current liabilities + non current liabilities
  * - [x] Book Value = Current Assets + Non-Current Assets - Current Liabilities - Non-Current Liabilities
  * - [x] CAGR = (End Value / Initial Value)^(1/time) - 1
  * - [x] I need the Book Value CAGR
+ * - [x] I need the average balance sheet
+ * - [x] We are exposing the free cash flow, the total assets and the total liabilities by
+ * getters, chech how make these private and just return it on the right moment, is it okay to have
+ * them as getters and setters?
  */
 describe("Company", () => {
   let company: Company;
@@ -93,5 +100,41 @@ describe("CashFlow", () => {
     expect(
       new CashFlow(1000, 1000).divide(2).equals(new CashFlow(500, 500))
     ).toBeTruthy();
+  });
+});
+
+describe("Balance Sheet", () => {
+  let balanceSheet: BalanceSheet;
+
+  beforeEach(() => {
+    balanceSheet = new BalanceSheet(1000, 2000, 3000, 4000, 2021);
+  });
+
+  test("can add year", () => {
+    expect(balanceSheet.sameYear(balanceSheet)).toBeTruthy();
+  });
+
+  test("can add assets and liabilities", () => {
+    expect(balanceSheet.equals(balanceSheet)).toBeTruthy();
+  });
+
+  test("total assets equals current asset plus non current asset", () => {
+    expect(balanceSheet.totalAssets).toBe(3000);
+  });
+
+  test("total liabilities equals current libilities plus non current libilities", () => {
+    expect(balanceSheet.totalLiabilities).toBe(7000);
+  });
+
+  test("check equality", () => {
+    expect(
+      balanceSheet.equals(new BalanceSheet(1000, 2000, 3000, 4000, 2021))
+    ).toBeTruthy();
+
+    expect(balanceSheet.equals(new BalanceSheet(0, 0, 0, 0, 2021))).toBeFalsy();
+  });
+
+  test("book value equals total assets minus total liabilities", () => {
+    expect(balanceSheet.bookValue).toBe(-4000);
   });
 });

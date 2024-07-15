@@ -1,7 +1,7 @@
 export class CashFlow {
   constructor(
-    private operational: number = 0,
-    private investing: number = 0,
+    private operational: number,
+    private investing: number,
     private year?: number
   ) {}
 
@@ -10,10 +10,7 @@ export class CashFlow {
   }
 
   equals(cashFlow: CashFlow) {
-    return (
-      this.operational === cashFlow.operational &&
-      this.investing === cashFlow.investing
-    );
+    return this.freeCashFlow === cashFlow.freeCashFlow;
   }
 
   plus(cashFlow: CashFlow) {
