@@ -89,7 +89,7 @@ describe("CashFlow", () => {
     ).toBeTruthy();
   });
 
-  test("can sum cashflows", () => {
+  test("can divide cashflows", () => {
     expect(
       new CashFlow(1000, 1000).divide(2).equals(new CashFlow(500, 500))
     ).toBeTruthy();
