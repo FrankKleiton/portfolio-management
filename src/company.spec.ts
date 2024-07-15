@@ -4,18 +4,22 @@ import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
 
 /**
- * TODO
+ * TODO:
  * - [v] Companies (Kepler Weber, Taurus) have Cash Flow Statement for each year
  * - [v] Free Cash Flow = Operational Cash Flow - Investing Cash Flow
  * - [v] I need the average Free Cash Flow
  * - [x] I need the Free Cash Flow CAGR
- * - [x] Companies (Kepler Weber, Taurus) have Balance Sheet Statement for each year
+ * - [v] Companies (Kepler Weber, Taurus) have Balance Sheet Statement for each year
  * - [v] Total asset = current asset + non current asset
  * - [v] Total liabilities = current liabilities + non current liabilities
- * - [x] Book Value = Current Assets + Non-Current Assets - Current Liabilities - Non-Current Liabilities
+ * - [v] Book Value = Current Assets + Non-Current Assets - Current Liabilities - Non-Current Liabilities
  * - [x] CAGR = (End Value / Initial Value)^(1/time) - 1
  * - [x] I need the Book Value CAGR
  * - [x] I need the average balance sheet
+ */
+
+/**
+ * Future TODO
  * - [x] We are exposing the free cash flow, the total assets and the total liabilities by
  * getters, chech how make these private and just return it on the right moment, is it okay to have
  * them as getters and setters?
@@ -39,19 +43,35 @@ describe("Company", () => {
     expect(company.cashFlows).toHaveLength(3);
   });
 
+  test("can insert and retrieve balance sheets", () => {
+    for (let i = 1; i <= 3; i++) {
+      company.addBalanceSheet(new BalanceSheet(i, i, i, i, i));
+    }
+
+    expect(company.balanceSheets).toHaveLength(3);
+  });
+
   test("adding cashflow to a year overrides existent one", () => {
+    const balanceSheet2 = new CashFlow(3000, 1000, 2021);
     company.addCashFlow(new CashFlow(2000, 1000, 2021));
-    company.addCashFlow(new CashFlow(3000, 1000, 2021));
+    company.addCashFlow(balanceSheet2);
 
     expect(company.cashFlows).toHaveLength(1);
-    expect(
-      company.cashFlows[0].equals(new CashFlow(3000, 1000, 2021))
-    ).toBeTruthy();
+    expect(company.cashFlows[0].equals(balanceSheet2)).toBeTruthy();
+  });
+
+  test("adding balancesheet to a year overrides existent one", () => {
+    const balanceSheet2 = new BalanceSheet(3000, 1000, 3000, 1000, 2021);
+    company.addBalanceSheet(new BalanceSheet(2000, 1000, 2000, 1000, 2021));
+    company.addBalanceSheet(balanceSheet2);
+
+    expect(company.balanceSheets).toHaveLength(1);
+    expect(company.balanceSheets[0].equals(balanceSheet2)).toBeTruthy();
   });
 });
 
 describe("Accounting", () => {
-  test("calculate average free cash flow", () => {
+  test("calculate average cash flow", () => {
     const company = new Company("Company");
 
     company.addCashFlow(new CashFlow(1000, 500, 2021));
@@ -85,7 +105,9 @@ describe("CashFlow", () => {
   });
 
   test("check equality", () => {
+    const cashFlow2 = new CashFlow(6000, 5000, 2021);
     expect(cashFlow.equals(cashFlow)).toBeTruthy();
+    expect(cashFlow.equals(cashFlow2)).toBeFalsy();
   });
 
   test("can sum cashflows", () => {

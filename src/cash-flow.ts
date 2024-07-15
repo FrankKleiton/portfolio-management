@@ -1,16 +1,16 @@
-export class CashFlow {
+import { Statement } from "./statement";
+
+export class CashFlow extends Statement {
   constructor(
     private operational: number,
     private investing: number,
-    private year?: number
-  ) {}
+    year?: number
+  ) {
+    super(year);
+  }
 
   get freeCashFlow() {
     return this.operational - this.investing;
-  }
-
-  equals(cashFlow: CashFlow) {
-    return this.freeCashFlow === cashFlow.freeCashFlow;
   }
 
   plus(cashFlow: CashFlow) {
@@ -18,10 +18,6 @@ export class CashFlow {
     const investing = this.investing + cashFlow.investing;
 
     return new CashFlow(operational, investing);
-  }
-
-  sameYear(cashFlow: CashFlow) {
-    return this.year === cashFlow.year;
   }
 
   divide(divisor: number): CashFlow {
