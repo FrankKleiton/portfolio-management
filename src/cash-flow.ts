@@ -23,8 +23,4 @@ export class CashFlow extends Statement {
   divide(divisor: number): CashFlow {
     return new CashFlow(this.operational / divisor, this.investing / divisor);
   }
-
-  static is(cashFlow: CashFlow) {
-    return cashFlow instanceof CashFlow;
-  }
 }

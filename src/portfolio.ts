@@ -1,4 +1,3 @@
-import { AverageCashFlow } from "./average-cash-flow";
 import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
 import { FinancialRatios } from "./financial-ratios";
@@ -32,7 +31,7 @@ export class Portfolio {
   }
   averageCashFlow(company: Company): CashFlow {
     return company.cashFlows
-      .reduce((p, c) => p.plus(c), new AverageCashFlow(0, 0))
+      .reduce((p, c) => p.plus(c), new CashFlow(0, 0))
       .divide(company.cashFlows.length);
   }
 }

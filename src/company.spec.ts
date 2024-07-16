@@ -1,5 +1,4 @@
-import { Portfolio } from "./accounting";
-import { AverageCashFlow } from "./average-cash-flow";
+import { Portfolio } from "./portfolio";
 import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
@@ -98,7 +97,6 @@ describe("Tests", () => {
       const cashFlow = portfolio.averageCashFlow(company);
 
       expect(cashFlow.equals(new CashFlow(1500, 750))).toBeTruthy();
-      expect(AverageCashFlow.is(cashFlow)).toBeTruthy();
     });
   });
 
@@ -131,14 +129,6 @@ describe("Tests", () => {
         new CashFlow(1000, 1000)
           .plus(new CashFlow(1000, 1000))
           .equals(new CashFlow(2000, 2000))
-      ).toBeTruthy();
-    });
-
-    test("summing different types of cashflows will return the first type", () => {
-      expect(
-        AverageCashFlow.is(
-          new AverageCashFlow(1000, 1000).plus(new CashFlow(1000, 1000))
-        )
       ).toBeTruthy();
     });
 
@@ -197,16 +187,6 @@ describe("Tests", () => {
 
       expect(ratio?.equals(new FinancialRatios(2021, 10))).toBeTruthy();
       expect(ratio?.sameYear(new FinancialRatios(2021))).toBeTruthy();
-    });
-  });
-
-  describe("AverageCashFlow", () => {
-    test("is it average cash flow?", () => {
-      const cashflow1 = new AverageCashFlow(0, 0);
-      const cashflow2 = new CashFlow(0, 0, 2021);
-
-      expect(AverageCashFlow.is(cashflow1)).toBeTruthy();
-      expect(AverageCashFlow.is(cashflow2)).toBeFalsy();
     });
   });
 });
