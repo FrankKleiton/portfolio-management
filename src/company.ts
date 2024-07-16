@@ -1,5 +1,6 @@
 import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
+import { CashFlowTypes } from "./cash-flow-types";
 import { FinancialRatios } from "./financial-ratios";
 
 export class Company {
@@ -8,6 +9,10 @@ export class Company {
   private _financialRatios: FinancialRatios[] = [];
 
   constructor(public name: string, public marketValue: number) {}
+
+  getAverageCashFlow() {
+    return this._cashFlows.find((cf) => cf.type == CashFlowTypes.AVERAGE);
+  }
 
   addCashFlow(cashFlow: CashFlow) {
     const i = this._cashFlows.findIndex((c) => cashFlow.sameYear(c));

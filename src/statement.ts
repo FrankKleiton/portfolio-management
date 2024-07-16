@@ -10,6 +10,12 @@ export abstract class Statement {
       (key) => key != "year"
     ) as (keyof Statement)[];
 
-    return keys.some((key) => this[key] === statement[key]);
+    for (const key of keys) {
+      if (this[key] !== statement[key]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }

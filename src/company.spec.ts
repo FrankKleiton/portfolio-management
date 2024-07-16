@@ -3,6 +3,7 @@ import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
 import { FinancialRatios } from "./financial-ratios";
+import { CashFlowTypes } from "./cash-flow-types";
 
 /**
  * TODO:
@@ -12,10 +13,7 @@ import { FinancialRatios } from "./financial-ratios";
  * ((End Value / Initial Value)^(1/time) - 1)
  * - [x] I also need the Book Value CAGR
  * - [x] I need the average balance sheet
- * - [x] instead of returning the average cashflow, add it to the list
- * - [x] if an average cash flow alread exists, then you must recompute it
  * [x] create a special cashflow called AverageCashFlow
- * [x] each company should have just one average cashflow
  * [x] each time an cashflow is added, the average cashflow must be recomputed
  * [x] the cashflow statement should be ordered by year(the average should be on the end)
  * [x] each time an balancesheet is added, the average balancesheet must be recomputed
@@ -84,6 +82,11 @@ describe("Tests", () => {
   });
 
   describe("Portfolio", () => {
+    beforeEach(() => {
+      company.addCashFlow(new CashFlow(1000, 500, 2021));
+      company.addCashFlow(new CashFlow(2000, 1000, 2022));
+    });
+
     test("can add company", () => {
       portfolio.addCompany(company);
       portfolio.addCompany(company);
@@ -91,12 +94,33 @@ describe("Tests", () => {
     });
 
     test("calculate average cash flow", () => {
-      company.addCashFlow(new CashFlow(1000, 500, 2021));
-      company.addCashFlow(new CashFlow(2000, 1000, 2022));
+      portfolio.buildAverageCashFlow(company);
 
-      const cashFlow = portfolio.averageCashFlow(company);
+      const average = company.getAverageCashFlow();
+      expect(
+        average?.equals(
+          new CashFlow(1500, 750, undefined, CashFlowTypes.AVERAGE)
+        )
+      ).toBeTruthy();
+    });
 
-      expect(cashFlow.equals(new CashFlow(1500, 750))).toBeTruthy();
+    test("calculate average cash flow a second time should override first one", () => {
+      portfolio.buildAverageCashFlow(company);
+
+      console.log(company.cashFlows);
+
+      company.addCashFlow(new CashFlow(3000, 1500, 2023));
+
+      portfolio.buildAverageCashFlow(company);
+
+      console.log(company.cashFlows);
+
+      const average = company.getAverageCashFlow();
+      expect(
+        average?.equals(
+          new CashFlow(2000, 1000, undefined, CashFlowTypes.AVERAGE)
+        )
+      ).toBeTruthy();
     });
   });
 
