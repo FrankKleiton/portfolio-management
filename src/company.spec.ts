@@ -2,7 +2,7 @@ import { Portfolio } from "./portfolio";
 import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
-import { FinancialRatios } from "./financial-ratios";
+import { FinancialAnalysis } from "./financial-analysis";
 import { AverageCashFlow } from "./average-cash-flow";
 
 /**
@@ -56,10 +56,10 @@ describe("Tests", () => {
 
     test("can insert and retrieve balance sheets", () => {
       for (let i = 1; i <= 3; i++) {
-        company.addBalanceSheet(new BalanceSheet(i, i, i, i, i));
+        company.balanceSheets.add(new BalanceSheet(i, i, i, i, i));
       }
 
-      expect(company.balanceSheets).toHaveLength(3);
+      expect(company.balanceSheets.all()).toHaveLength(3);
     });
 
     test("adding cashflow to a year overrides existent one", () => {
@@ -73,11 +73,11 @@ describe("Tests", () => {
 
     test("adding balancesheet to a year overrides existent one", () => {
       const balanceSheet2 = new BalanceSheet(3000, 1000, 3000, 1000, 2021);
-      company.addBalanceSheet(new BalanceSheet(2000, 1000, 2000, 1000, 2021));
-      company.addBalanceSheet(balanceSheet2);
+      company.balanceSheets.add(new BalanceSheet(2000, 1000, 2000, 1000, 2021));
+      company.balanceSheets.add(balanceSheet2);
 
-      expect(company.balanceSheets).toHaveLength(1);
-      expect(company.balanceSheets[0].equals(balanceSheet2)).toBeTruthy();
+      expect(company.balanceSheets.all()).toHaveLength(1);
+      expect(company.balanceSheets.all()[0].equals(balanceSheet2)).toBeTruthy();
     });
   });
 
@@ -195,10 +195,10 @@ describe("Tests", () => {
 
       portfolio.buildFinancialAnalysis(company);
 
-      const ratio = company.financialRatios.at(0);
+      const ratio = company.financialAnalyses.all().at(0);
 
-      expect(ratio?.equals(new FinancialRatios(2021, 10))).toBeTruthy();
-      expect(ratio?.sameYear(new FinancialRatios(2021))).toBeTruthy();
+      expect(ratio?.equals(new FinancialAnalysis(2021, 10))).toBeTruthy();
+      expect(ratio?.sameYear(new FinancialAnalysis(2021))).toBeTruthy();
     });
   });
 });

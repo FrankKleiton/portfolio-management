@@ -1,6 +1,6 @@
 import { AverageCashFlow } from "./average-cash-flow";
 import { Company } from "./company";
-import { FinancialRatios } from "./financial-ratios";
+import { FinancialAnalysis } from "./financial-analysis";
 
 export class Portfolio {
   private _companies: Company[] = [];
@@ -21,12 +21,12 @@ export class Portfolio {
 
   buildFinancialAnalysis(company: Company) {
     for (const cashFlow of company.cashFlows.all()) {
-      const ratio = new FinancialRatios(cashFlow.year);
+      const analysis = new FinancialAnalysis(cashFlow.year);
 
-      ratio.freeCashFlowYield =
+      analysis.freeCashFlowYield =
         (cashFlow.freeCashFlow / company.marketValue) * 100;
 
-      company.addFinancialRatio(ratio);
+      company.financialAnalyses.add(analysis);
     }
   }
 
