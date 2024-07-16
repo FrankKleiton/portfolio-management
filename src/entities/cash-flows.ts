@@ -2,7 +2,7 @@ import { AverageCashFlow } from "./average-cash-flow";
 import { CashFlow } from "./cash-flow";
 
 export class CashFlows {
-  private data: CashFlow[] = [];
+  private data: Map<number, CashFlow> = new Map();
   private average?: AverageCashFlow;
 
   averageCashFlow() {
@@ -13,21 +13,17 @@ export class CashFlows {
     if (cashFlow instanceof AverageCashFlow) {
       this.average = cashFlow;
     } else {
-      const i = this.data.findIndex((c: CashFlow) => cashFlow.sameYear(c));
-
-      if (i > -1) {
-        this.data[i] = cashFlow;
-      } else {
-        this.data.push(cashFlow);
+      if (cashFlow.year) {
+        this.data.set(cashFlow.year, cashFlow);
       }
     }
   }
 
-  all() {
-    return this.data;
+  toList() {
+    return Array.from(this.data.values());
   }
 
   length(): number {
-    return this.data.length;
+    return this.data.size;
   }
 }

@@ -14,7 +14,7 @@ export class Portfolio {
   }
 
   buildFinancialAnalysis(company: Company) {
-    for (const cashFlow of company.cashFlows.all()) {
+    for (const cashFlow of company.cashFlows.toList()) {
       const analysis = new FinancialAnalysis(cashFlow.year);
 
       analysis.freeCashFlowYield =
@@ -27,7 +27,7 @@ export class Portfolio {
   buildAverageCashFlow(company: Company) {
     let total = new AverageCashFlow(0, 0);
 
-    for (let c of company.cashFlows.all()) {
+    for (let c of company.cashFlows.toList()) {
       total = total.plus(c);
     }
 

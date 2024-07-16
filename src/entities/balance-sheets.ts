@@ -1,19 +1,15 @@
 import { BalanceSheet } from "./balance-sheet";
 
 export class BalanceSheets {
-  private data: BalanceSheet[] = [];
+  private data: Map<number, BalanceSheet> = new Map();
 
   add(balanceSheet: BalanceSheet) {
-    const i = this.data.findIndex((c) => balanceSheet.sameYear(c));
-
-    if (i > -1) {
-      this.data[i] = balanceSheet;
-    } else {
-      this.data.push(balanceSheet);
+    if (balanceSheet.year) {
+      this.data.set(balanceSheet.year, balanceSheet);
     }
   }
 
-  all() {
-    return this.data;
+  toList() {
+    return Array.from(this.data.values());
   }
 }

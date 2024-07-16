@@ -13,7 +13,7 @@ describe("BalanceSheets", () => {
       balanceSheets.add(new BalanceSheet(i, i, i, i, i));
     }
 
-    expect(balanceSheets.all()).toHaveLength(3);
+    expect(balanceSheets.toList()).toHaveLength(3);
   });
 
   test("adding balancesheet to a year overrides existent one", () => {
@@ -21,7 +21,7 @@ describe("BalanceSheets", () => {
     balanceSheets.add(new BalanceSheet(2000, 1000, 2000, 1000, 2021));
     balanceSheets.add(balanceSheet2);
 
-    expect(balanceSheets.all()).toHaveLength(1);
-    expect(balanceSheets.all()[0].equals(balanceSheet2)).toBeTruthy();
+    expect(balanceSheets.toList()).toHaveLength(1);
+    expect(balanceSheets.toList()[0].equals(balanceSheet2)).toBeTruthy();
   });
 });

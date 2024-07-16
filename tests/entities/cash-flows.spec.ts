@@ -13,7 +13,7 @@ describe("CashFlows", () => {
       cashFlows.add(new CashFlow(i, i, i));
     }
 
-    expect(cashFlows.all()).toHaveLength(3);
+    expect(cashFlows.toList()).toHaveLength(3);
   });
 
   test("adding cashflow to a year overrides existent one", () => {
@@ -21,7 +21,7 @@ describe("CashFlows", () => {
     cashFlows.add(new CashFlow(2000, 1000, 2021));
     cashFlows.add(cashFlow2);
 
-    expect(cashFlows.all()).toHaveLength(1);
-    expect(cashFlows.all()[0].equals(cashFlow2)).toBeTruthy();
+    expect(cashFlows.toList()).toHaveLength(1);
+    expect(cashFlows.toList()[0].equals(cashFlow2)).toBeTruthy();
   });
 });
