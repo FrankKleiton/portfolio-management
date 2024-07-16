@@ -1,5 +1,5 @@
 export abstract class Statement {
-  constructor(private year?: number) {}
+  constructor(public year?: number) {}
 
   sameYear(statement: Statement) {
     return this.year === statement.year;

@@ -1,11 +1,13 @@
 import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
+import { FinancialRatios } from "./financial-ratios";
 
 export class Company {
   private _cashFlows: CashFlow[] = [];
   private _balanceSheets: BalanceSheet[] = [];
+  private _financialRatios: FinancialRatios[] = [];
 
-  constructor(public name: string) {}
+  constructor(public name: string, public marketValue: number) {}
 
   addCashFlow(cashFlow: CashFlow) {
     const i = this._cashFlows.findIndex((c) => cashFlow.sameYear(c));
@@ -33,5 +35,13 @@ export class Company {
 
   get balanceSheets() {
     return this._balanceSheets;
+  }
+
+  get financialRatios() {
+    return this._financialRatios;
+  }
+
+  addFinancialRatio(financialRatios: FinancialRatios) {
+    this._financialRatios.push(financialRatios);
   }
 }
