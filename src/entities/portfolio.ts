@@ -3,20 +3,14 @@ import { Company } from "./company";
 import { FinancialAnalysis } from "./financial-analysis";
 
 export class Portfolio {
-  private _companies: Company[] = [];
+  private _companies: Map<string, Company> = new Map();
 
   get companies() {
-    return this._companies;
+    return Array.from(this._companies.values());
   }
 
   addCompany(company: Company) {
-    const i = this._companies.findIndex((c) => c.name == company.name);
-
-    if (i > -1) {
-      this._companies[i] = company;
-    } else {
-      this._companies.push(company);
-    }
+    this._companies.set(company.name, company);
   }
 
   buildFinancialAnalysis(company: Company) {
