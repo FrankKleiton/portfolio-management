@@ -1,32 +1,44 @@
+import { AverageCashFlow } from "./average-cash-flow";
 import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
-import { CashFlowTypes } from "./cash-flow-types";
 import { FinancialRatios } from "./financial-ratios";
+class CashFlows {
+  private data: CashFlow[] = [];
+  private average?: AverageCashFlow;
+
+  averageCashFlow() {
+    return this.average;
+  }
+
+  add(cashFlow: CashFlow) {
+    if (cashFlow instanceof AverageCashFlow) {
+      this.average = cashFlow;
+    } else {
+      const i = this.data.findIndex((c: CashFlow) => cashFlow.sameYear(c));
+
+      if (i > -1) {
+        this.data[i] = cashFlow;
+      } else {
+        this.data.push(cashFlow);
+      }
+    }
+  }
+
+  all() {
+    return this.data;
+  }
+
+  length(): number {
+    return this.data.length;
+  }
+}
 
 export class Company {
-  private _cashFlows: CashFlow[] = [];
+  public cashFlows = new CashFlows();
   private _balanceSheets: BalanceSheet[] = [];
   private _financialRatios: FinancialRatios[] = [];
 
   constructor(public name: string, public marketValue: number) {}
-
-  getAverageCashFlow() {
-    return this._cashFlows.find((cf) => cf.type == CashFlowTypes.AVERAGE);
-  }
-
-  addCashFlow(cashFlow: CashFlow) {
-    const i = this._cashFlows.findIndex((c) => cashFlow.sameYear(c));
-
-    if (i > -1) {
-      this._cashFlows[i] = cashFlow;
-    } else {
-      this._cashFlows.push(cashFlow);
-    }
-  }
-
-  get cashFlows() {
-    return this._cashFlows;
-  }
 
   addBalanceSheet(balanceSheet: BalanceSheet) {
     const i = this._balanceSheets.findIndex((c) => balanceSheet.sameYear(c));

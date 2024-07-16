@@ -1,5 +1,4 @@
-import { CashFlow } from "./cash-flow";
-import { CashFlowTypes } from "./cash-flow-types";
+import { AverageCashFlow } from "./average-cash-flow";
 import { Company } from "./company";
 import { FinancialRatios } from "./financial-ratios";
 
@@ -21,7 +20,7 @@ export class Portfolio {
   }
 
   buildFinancialAnalysis(company: Company) {
-    for (const cashFlow of company.cashFlows) {
+    for (const cashFlow of company.cashFlows.all()) {
       const ratio = new FinancialRatios(cashFlow.year);
 
       ratio.freeCashFlowYield =
@@ -30,25 +29,16 @@ export class Portfolio {
       company.addFinancialRatio(ratio);
     }
   }
+
   buildAverageCashFlow(company: Company) {
-    const found = company.getAverageCashFlow();
+    let total = new AverageCashFlow(0, 0);
 
-    const average = company.cashFlows
-      .filter((c) => c.type != CashFlowTypes.AVERAGE)
-      .reduce(
-        (p, c) => p.plus(c),
-        new CashFlow(0, 0, undefined, CashFlowTypes.AVERAGE)
-      )
-      .divide(found ? company.cashFlows.length - 1 : company.cashFlows.length);
-
-    if (found) {
-      for (const [index, cashFlow] of company.cashFlows.entries()) {
-        if (cashFlow.equals(found)) {
-          company.cashFlows[index] = average;
-        }
-      }
-    } else {
-      company.addCashFlow(average);
+    for (let c of company.cashFlows.all()) {
+      total = total.plus(c);
     }
+
+    const average = total.divide(company.cashFlows.length());
+
+    company.cashFlows.add(average);
   }
 }

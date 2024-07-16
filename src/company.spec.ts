@@ -3,7 +3,7 @@ import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
 import { FinancialRatios } from "./financial-ratios";
-import { CashFlowTypes } from "./cash-flow-types";
+import { AverageCashFlow } from "./average-cash-flow";
 
 /**
  * TODO:
@@ -48,10 +48,10 @@ describe("Tests", () => {
 
     test("can insert and retrieve cashflows", () => {
       for (let i = 1; i <= 3; i++) {
-        company.addCashFlow(new CashFlow(i, i, i));
+        company.cashFlows.add(new CashFlow(i, i, i));
       }
 
-      expect(company.cashFlows).toHaveLength(3);
+      expect(company.cashFlows.all()).toHaveLength(3);
     });
 
     test("can insert and retrieve balance sheets", () => {
@@ -64,11 +64,11 @@ describe("Tests", () => {
 
     test("adding cashflow to a year overrides existent one", () => {
       const balanceSheet2 = new CashFlow(3000, 1000, 2021);
-      company.addCashFlow(new CashFlow(2000, 1000, 2021));
-      company.addCashFlow(balanceSheet2);
+      company.cashFlows.add(new CashFlow(2000, 1000, 2021));
+      company.cashFlows.add(balanceSheet2);
 
-      expect(company.cashFlows).toHaveLength(1);
-      expect(company.cashFlows[0].equals(balanceSheet2)).toBeTruthy();
+      expect(company.cashFlows.all()).toHaveLength(1);
+      expect(company.cashFlows.all()[0].equals(balanceSheet2)).toBeTruthy();
     });
 
     test("adding balancesheet to a year overrides existent one", () => {
@@ -83,8 +83,8 @@ describe("Tests", () => {
 
   describe("Portfolio", () => {
     beforeEach(() => {
-      company.addCashFlow(new CashFlow(1000, 500, 2021));
-      company.addCashFlow(new CashFlow(2000, 1000, 2022));
+      company.cashFlows.add(new CashFlow(1000, 500, 2021));
+      company.cashFlows.add(new CashFlow(2000, 1000, 2022));
     });
 
     test("can add company", () => {
@@ -96,31 +96,19 @@ describe("Tests", () => {
     test("calculate average cash flow", () => {
       portfolio.buildAverageCashFlow(company);
 
-      const average = company.getAverageCashFlow();
-      expect(
-        average?.equals(
-          new CashFlow(1500, 750, undefined, CashFlowTypes.AVERAGE)
-        )
-      ).toBeTruthy();
+      const average = company.cashFlows.averageCashFlow();
+      expect(average?.equals(new AverageCashFlow(1500, 750))).toBeTruthy();
     });
 
     test("calculate average cash flow a second time should override first one", () => {
       portfolio.buildAverageCashFlow(company);
 
-      console.log(company.cashFlows);
-
-      company.addCashFlow(new CashFlow(3000, 1500, 2023));
+      company.cashFlows.add(new CashFlow(3000, 1500, 2023));
 
       portfolio.buildAverageCashFlow(company);
 
-      console.log(company.cashFlows);
-
-      const average = company.getAverageCashFlow();
-      expect(
-        average?.equals(
-          new CashFlow(2000, 1000, undefined, CashFlowTypes.AVERAGE)
-        )
-      ).toBeTruthy();
+      const average = company.cashFlows.averageCashFlow();
+      expect(average?.equals(new AverageCashFlow(2000, 1000))).toBeTruthy();
     });
   });
 
@@ -203,7 +191,7 @@ describe("Tests", () => {
 
   describe("Financial Ratios", () => {
     test("can get the free cash flow yield", () => {
-      company.addCashFlow(new CashFlow(20, 10, 2021));
+      company.cashFlows.add(new CashFlow(20, 10, 2021));
 
       portfolio.buildFinancialAnalysis(company);
 
