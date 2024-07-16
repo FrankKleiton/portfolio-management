@@ -1,4 +1,5 @@
 import { Portfolio } from "./accounting";
+import { AverageCashFlow } from "./average-cash-flow";
 import { BalanceSheet } from "./balance-sheet";
 import { CashFlow } from "./cash-flow";
 import { Company } from "./company";
@@ -12,8 +13,13 @@ import { FinancialRatios } from "./financial-ratios";
  * ((End Value / Initial Value)^(1/time) - 1)
  * - [x] I also need the Book Value CAGR
  * - [x] I need the average balance sheet
- * - [x] calculate the free cash flow yield of each year based on the current
- * market value
+ * - [x] instead of returning the average cashflow, add it to the list
+ * - [x] if an average cash flow alread exists, then you must recompute it
+ * [x] create a special cashflow called AverageCashFlow
+ * [x] each company should have just one average cashflow
+ * [x] each time an cashflow is added, the average cashflow must be recomputed
+ * [x] the cashflow statement should be ordered by year(the average should be on the end)
+ * [x] each time an balancesheet is added, the average balancesheet must be recomputed
  */
 
 /**
@@ -23,6 +29,7 @@ import { FinancialRatios } from "./financial-ratios";
  * - [x] We are exposing the free cash flow, the total assets and the total liabilities by
  * getters, chech how make these private and just return it on the right moment, is it okay to have
  * them as getters and setters?
+ * - [x] the analysts will know how to calculate the ratios
  */
 describe("Tests", () => {
   let company: Company;
@@ -78,6 +85,12 @@ describe("Tests", () => {
   });
 
   describe("Portfolio", () => {
+    test("can add company", () => {
+      portfolio.addCompany(company);
+      portfolio.addCompany(company);
+      expect(portfolio.companies).toHaveLength(1);
+    });
+
     test("calculate average cash flow", () => {
       company.addCashFlow(new CashFlow(1000, 500, 2021));
       company.addCashFlow(new CashFlow(2000, 1000, 2022));
@@ -85,6 +98,7 @@ describe("Tests", () => {
       const cashFlow = portfolio.averageCashFlow(company);
 
       expect(cashFlow.equals(new CashFlow(1500, 750))).toBeTruthy();
+      expect(AverageCashFlow.is(cashFlow)).toBeTruthy();
     });
   });
 
@@ -108,9 +122,8 @@ describe("Tests", () => {
     });
 
     test("check equality", () => {
-      const cashFlow2 = new CashFlow(6000, 5000, 2021);
       expect(cashFlow.equals(cashFlow)).toBeTruthy();
-      expect(cashFlow.equals(cashFlow2)).toBeFalsy();
+      expect(cashFlow.equals(new CashFlow(6000, 5000, 2021))).toBeFalsy();
     });
 
     test("can sum cashflows", () => {
@@ -118,6 +131,14 @@ describe("Tests", () => {
         new CashFlow(1000, 1000)
           .plus(new CashFlow(1000, 1000))
           .equals(new CashFlow(2000, 2000))
+      ).toBeTruthy();
+    });
+
+    test("summing different types of cashflows will return the first type", () => {
+      expect(
+        AverageCashFlow.is(
+          new AverageCashFlow(1000, 1000).plus(new CashFlow(1000, 1000))
+        )
       ).toBeTruthy();
     });
 
@@ -176,6 +197,16 @@ describe("Tests", () => {
 
       expect(ratio?.equals(new FinancialRatios(2021, 10))).toBeTruthy();
       expect(ratio?.sameYear(new FinancialRatios(2021))).toBeTruthy();
+    });
+  });
+
+  describe("AverageCashFlow", () => {
+    test("is it average cash flow?", () => {
+      const cashflow1 = new AverageCashFlow(0, 0);
+      const cashflow2 = new CashFlow(0, 0, 2021);
+
+      expect(AverageCashFlow.is(cashflow1)).toBeTruthy();
+      expect(AverageCashFlow.is(cashflow2)).toBeFalsy();
     });
   });
 });
