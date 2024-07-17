@@ -10,7 +10,7 @@ export class Portfolio {
   }
 
   addCompany(company: Company) {
-    this._companies.set(company.name, company);
+    this._companies.set(company.ticket, company);
   }
 
   buildFinancialAnalysis(company: Company) {

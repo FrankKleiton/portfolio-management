@@ -6,9 +6,7 @@ export abstract class Statement {
   }
 
   equals(statement: Statement) {
-    const keys = Object.keys(this).filter(
-      (key) => key != "year"
-    ) as (keyof Statement)[];
+    const keys = Object.keys(this) as (keyof Statement)[];
 
     for (const key of keys) {
       if (this[key] !== statement[key]) {

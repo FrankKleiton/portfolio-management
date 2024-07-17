@@ -18,7 +18,7 @@ export class AverageCashFlow extends CashFlow {
     );
   }
 
-  static is(cashFlow: CashFlow) {
+  static is(cashFlow: CashFlow): boolean {
     return cashFlow instanceof AverageCashFlow;
   }
 }
