@@ -1,34 +1,29 @@
-import { InMemoryTicketGateway } from "../src/InMemoryTicketGateway";
-import { Ticket } from "../src/Ticket";
-import { TicketGateway } from "../src/TicketGateway";
+import { Context } from "../src/Context";
+import { InMemoryTicketGateway } from "./InMemoryTicketGateway";
+import { Stock } from "../src/Stock";
 
-class Context {
-  static ticketGateway: TicketGateway;
-}
-
-describe("InMemoryTicketGateway", () => {
+describe("InMemoryStockGateway", () => {
   let gateway: InMemoryTicketGateway;
-  let ticket1: Ticket;
+  let stock1: Stock;
 
   beforeEach(async () => {
     gateway = new InMemoryTicketGateway();
-    Context.ticketGateway = gateway;
+    stock1 = new Stock("Stock1");
 
-    ticket1 = new Ticket("Ticket1");
-
-    await Context.ticketGateway.save(ticket1);
-    await Context.ticketGateway.save(new Ticket("Ticket2"));
+    Context.stockGateway = gateway;
+    await Context.stockGateway.save(stock1);
+    await Context.stockGateway.save(new Stock("Stock2"));
   });
 
-  test("can find ticket", async () => {
-    const found = await Context.ticketGateway.find("Ticket1");
+  test("can find stock", async () => {
+    const found = await Context.stockGateway.find("Stock1");
 
     expect(found?.equals(found)).toBeTruthy();
   });
 
-  test("can delete ticket", async () => {
-    await Context.ticketGateway.delete("Ticket1");
+  test("can delete Stock", async () => {
+    await Context.stockGateway.delete("Stock1");
 
-    expect(await Context.ticketGateway.findAll()).toHaveLength(1);
+    expect(await Context.stockGateway.findAll()).toHaveLength(1);
   });
 });
