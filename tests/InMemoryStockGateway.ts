@@ -1,7 +1,7 @@
 import { Stock } from "../src/Stock";
 import { StockGateway } from "../src/StockGateway";
 
-export class InMemoryTicketGateway implements StockGateway {
+export class InMemoryStockGateway implements StockGateway {
   private stocks: Stock[] = [];
 
   async save(stock: Stock): Promise<void> {
@@ -18,5 +18,9 @@ export class InMemoryTicketGateway implements StockGateway {
 
   async find(ticket: string): Promise<Stock | undefined> {
     return this.stocks.find((t) => t.equals(new Stock(ticket)));
+  }
+
+  clearAll() {
+    this.stocks = [];
   }
 }

@@ -11,4 +11,8 @@ export class InMemoryWebScraper implements WebScraper {
   async collectStock(ticket: string): Promise<Stock | undefined> {
     return this.stocks.find((t) => t.equals(new Stock(ticket)));
   }
+
+  clearAll() {
+    this.stocks = [];
+  }
 }
