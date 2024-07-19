@@ -1,7 +1,7 @@
 export class Stock {
-  constructor(private value: string) {}
+  constructor(public ticket: string, public marketValue: number = 0) {}
 
   equals(found: Stock): boolean {
-    return this.value === found?.value;
+    return this.ticket === found?.ticket;
   }
 }
