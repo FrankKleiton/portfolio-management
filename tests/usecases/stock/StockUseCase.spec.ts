@@ -3,8 +3,12 @@ import { Stock } from "../../../src/entities/Stock";
 import { inMemoryStockGateway, inMemoryWebScraper } from "../../utils";
 import { StockOutputBoundary } from "../../../src/usecases/stock/StockOutputBoundary";
 import { StockResponseModel } from "../../../src/usecases/stock/StockResponseModel";
+import { StockViewModel } from "../../../src/usecases/stock/StockViewModel";
 
 class StockDetailsPresenterSpy implements StockOutputBoundary {
+  getViewModel(): StockViewModel | null {
+    throw new Error("Method not implemented.");
+  }
   public responseModel: StockResponseModel | null = null;
 
   present(responseModel: StockResponseModel) {
@@ -31,7 +35,7 @@ describe("StockUseCase", () => {
     test("none stocks presented", async () => {
       await useCase.detailStocks(presenterSpy);
 
-      expect(presenterSpy.responseModel?.getStockDetails()).toHaveLength(0);
+      expect(presenterSpy.responseModel?.getStocks()).toHaveLength(0);
     });
   });
 
@@ -41,7 +45,7 @@ describe("StockUseCase", () => {
       await inMemoryWebScraper().addStock(new Stock("VALE3", 1000));
       await useCase.detailStocks(presenterSpy);
 
-      const details = presenterSpy.responseModel?.getStockDetails();
+      const details = presenterSpy.responseModel?.getStocks();
       expect(details).toHaveLength(1);
       expect(new Stock("VALE3", 1000).equals(details?.at(0))).toBeTruthy();
     });

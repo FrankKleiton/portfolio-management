@@ -11,7 +11,7 @@ export class StockUseCase {
       const stock = await Context.webScraper.collectStock(ticket);
 
       if (stock) {
-        responseModel.addStockDetail(stock);
+        responseModel.addStock(stock);
       }
     }
 

@@ -3,11 +3,11 @@ import { Stock } from "../../entities/Stock";
 export class StockResponseModel {
   private stocks: Stock[] = [];
 
-  addStockDetail(stock: Stock) {
+  addStock(stock: Stock) {
     this.stocks.push(stock);
   }
 
-  getStockDetails() {
+  getStocks() {
     return this.stocks;
   }
 }
