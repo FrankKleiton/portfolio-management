@@ -9,26 +9,31 @@ describe("StockTrackingUseCase", () => {
     useCase = new StockTrackingUseCase();
   });
 
-  test("fails to track invalid stock", () => {
-    expect(() => {
-      return useCase.trackStock("VALE");
-    }).rejects.toThrow("Invalid Stock!");
+  describe("given no stocks", () => {
+    test("fails to track invalid stock", () => {
+      expect(() => {
+        return useCase.trackStock("VALE");
+      }).rejects.toThrow("Invalid Stock!");
+    });
   });
 
-  test("tracks valid stock", async () => {
-    inMemoryWebScraper().addStock(new Stock("VALE3"));
+  describe("given one stock", () => {
+    beforeAll(() => {
+      inMemoryWebScraper().addStock(new Stock("VALE3"));
+    });
 
-    await useCase.trackStock("VALE3");
+    test("tracks valid stock", async () => {
+      await useCase.trackStock("VALE3");
 
-    expect(await inMemoryStockGateway().findAllTickets()).toHaveLength(1);
-  });
+      expect(await inMemoryStockGateway().findAllTickets()).toHaveLength(1);
+    });
 
-  test("fails to track already tracked stock", async () => {
-    await inMemoryStockGateway().saveTicket("VALE3");
-    inMemoryWebScraper().addStock(new Stock("VALE3"));
+    test("fails to track already tracked stock", async () => {
+      await inMemoryStockGateway().saveTicket("VALE3");
 
-    expect(() => {
-      return useCase.trackStock("VALE3");
-    }).rejects.toThrow("Existent Stock!");
+      expect(() => {
+        return useCase.trackStock("VALE3");
+      }).rejects.toThrow("Existent Stock!");
+    });
   });
 });
