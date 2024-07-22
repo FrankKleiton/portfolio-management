@@ -1,26 +1,25 @@
-import { Stock } from "../src/Stock";
-import { StockGateway } from "../src/StockGateway";
+import { DatabaseGateway } from "../src/StockGateway";
 
-export class InMemoryStockGateway implements StockGateway {
-  private stocks: Stock[] = [];
+export class InMemoryStockGateway implements DatabaseGateway {
+  private tickets: string[] = [];
 
-  async save(stock: Stock): Promise<void> {
-    this.stocks.push(stock);
+  async saveTicket(ticket: string): Promise<void> {
+    this.tickets.push(ticket);
   }
 
-  async delete(ticket: string): Promise<void> {
-    this.stocks = this.stocks.filter((t) => !t.equals(new Stock(ticket)));
+  async deleteTicket(ticket: string): Promise<void> {
+    this.tickets = this.tickets.filter((t) => t !== ticket);
   }
 
-  async findAll(): Promise<Stock[]> {
-    return this.stocks;
+  async findAllTickets(): Promise<string[]> {
+    return this.tickets;
   }
 
-  async find(ticket: string): Promise<Stock | undefined> {
-    return this.stocks.find((t) => t.equals(new Stock(ticket)));
+  async findTicket(ticket: string): Promise<string | undefined> {
+    return this.tickets.find((t) => t === ticket);
   }
 
   clearAll() {
-    this.stocks = [];
+    this.tickets = [];
   }
 }

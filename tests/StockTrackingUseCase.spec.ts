@@ -16,16 +16,15 @@ describe("StockTrackingUseCase", () => {
   });
 
   test("tracks valid stock", async () => {
-    const webScraper = inMemoryWebScraper();
-    webScraper.addStock(new Stock("VALE3"));
+    inMemoryWebScraper().addStock(new Stock("VALE3"));
 
     await useCase.trackStock("VALE3");
 
-    expect(await inMemoryStockGateway().findAll()).toHaveLength(1);
+    expect(await inMemoryStockGateway().findAllTickets()).toHaveLength(1);
   });
 
   test("fails to track already tracked stock", async () => {
-    await inMemoryStockGateway().save(new Stock("VALE3"));
+    await inMemoryStockGateway().saveTicket("VALE3");
     inMemoryWebScraper().addStock(new Stock("VALE3"));
 
     expect(() => {

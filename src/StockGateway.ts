@@ -1,8 +1,6 @@
-import { Stock } from "./Stock";
-
-export interface StockGateway {
-  save(ticket: Stock): Promise<void>;
-  findAll(): Promise<Stock[]>;
-  find(ticket: string): Promise<Stock | undefined>;
-  delete(ticket: string): Promise<void>;
+export interface DatabaseGateway {
+  saveTicket(ticket: string): Promise<void>;
+  findAllTickets(): Promise<string[]>;
+  findTicket(ticket: string): Promise<string | undefined>;
+  deleteTicket(ticket: string): Promise<void>;
 }

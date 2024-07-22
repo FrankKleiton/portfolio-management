@@ -1,25 +1,20 @@
-import { Stock } from "../src/Stock";
 import { inMemoryStockGateway } from "./utils";
 
 describe("InMemoryStockGateway", () => {
-  let stock1: Stock;
-
   beforeEach(async () => {
-    stock1 = new Stock("Stock1");
-
-    await inMemoryStockGateway().save(stock1);
-    await inMemoryStockGateway().save(new Stock("Stock2"));
+    await inMemoryStockGateway().saveTicket("Stock1");
+    await inMemoryStockGateway().saveTicket("Stock2");
   });
 
   test("can find stock", async () => {
-    const found = await inMemoryStockGateway().find("Stock1");
+    const found = await inMemoryStockGateway().findTicket("Stock1");
 
-    expect(found?.equals(found)).toBeTruthy();
+    expect("Stock1" === found).toBeTruthy();
   });
 
   test("can delete Stock", async () => {
-    await inMemoryStockGateway().delete("Stock1");
+    await inMemoryStockGateway().deleteTicket("Stock1");
 
-    expect(await inMemoryStockGateway().findAll()).toHaveLength(1);
+    expect(await inMemoryStockGateway().findAllTickets()).toHaveLength(1);
   });
 });
