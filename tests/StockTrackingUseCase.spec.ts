@@ -1,7 +1,6 @@
 import { StockTrackingUseCase } from "../src/StockTrackingUseCase";
-import { Context } from "../src/Context";
 import { Stock } from "../src/Stock";
-import { InMemoryWebScraper } from "./InMemoryWebScraper";
+import { inMemoryStockGateway, inMemoryWebScraper } from "./utils";
 
 describe("StockTrackingUseCase", () => {
   let useCase: StockTrackingUseCase;
@@ -17,18 +16,17 @@ describe("StockTrackingUseCase", () => {
   });
 
   test("tracks valid stock", async () => {
-    const webScraper = Context.webScraper as InMemoryWebScraper;
+    const webScraper = inMemoryWebScraper();
     webScraper.addStock(new Stock("VALE3"));
 
     await useCase.trackStock("VALE3");
 
-    expect(await Context.stockGateway.findAll()).toHaveLength(1);
+    expect(await inMemoryStockGateway().findAll()).toHaveLength(1);
   });
 
   test("fails to track already tracked stock", async () => {
-    await Context.stockGateway.save(new Stock("VALE3"));
-    const webScraper = Context.webScraper as InMemoryWebScraper;
-    webScraper.addStock(new Stock("VALE3"));
+    await inMemoryStockGateway().save(new Stock("VALE3"));
+    inMemoryWebScraper().addStock(new Stock("VALE3"));
 
     expect(() => {
       return useCase.trackStock("VALE3");

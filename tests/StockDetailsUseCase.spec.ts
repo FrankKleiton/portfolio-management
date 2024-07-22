@@ -1,14 +1,11 @@
-import { Context } from "../src/Context";
 import { StockDetailsUseCase } from "../src/StockDetailsUseCase";
 import { Stock } from "../src/Stock";
-import { InMemoryWebScraper } from "./InMemoryWebScraper";
+import { inMemoryStockGateway, inMemoryWebScraper } from "./utils";
 
 describe("StockDetailsUseCase", () => {
   test("detail one stock", async () => {
-    await Context.stockGateway.save(new Stock("VALE3"));
-    await (Context.webScraper as InMemoryWebScraper).addStock(
-      new Stock("VALE3", 1000000)
-    );
+    await inMemoryStockGateway().save(new Stock("VALE3"));
+    await inMemoryWebScraper().addStock(new Stock("VALE3", 1000000));
     const useCase = new StockDetailsUseCase();
 
     const presentableStocks = await useCase.detailStocks();
