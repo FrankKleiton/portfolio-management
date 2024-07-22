@@ -1,6 +1,6 @@
 import { DatabaseGateway } from "../../src/gateways/StockGateway";
 
-export class InMemoryStockGateway implements DatabaseGateway {
+export class InMemoryDatabaseGateway implements DatabaseGateway {
   private tickets: string[] = [];
 
   async saveTicket(ticket: string): Promise<void> {

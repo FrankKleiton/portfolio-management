@@ -1,11 +1,11 @@
 import { Context } from "../src/Context";
-import { InMemoryStockGateway } from "./doubles/InMemoryStockGateway";
+import { InMemoryDatabaseGateway } from "./doubles/InMemoryDatabaseGateway";
 import { InMemoryWebScraperGateway } from "./doubles/InMemoryWebScraperGateway";
 
-export function inMemoryStockGateway() {
-  return Context.DatabaseGateway as InMemoryStockGateway;
+export function inMemoryDatabaseGateway() {
+  return Context.databaseGateway as InMemoryDatabaseGateway;
 }
 
-export function inMemoryWebScraper() {
-  return Context.webScraper as InMemoryWebScraperGateway;
+export function inMemoryWebScraperGateway() {
+  return Context.webScraperGateway as InMemoryWebScraperGateway;
 }

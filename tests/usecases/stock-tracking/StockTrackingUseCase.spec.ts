@@ -1,6 +1,9 @@
 import { Stock } from "../../../src/entities/Stock";
 import { StockTrackingUseCase } from "../../../src/usecases/stock-tracking/StockTrackingUseCase";
-import { inMemoryStockGateway, inMemoryWebScraper } from "../../utils";
+import {
+  inMemoryDatabaseGateway,
+  inMemoryWebScraperGateway,
+} from "../../utils";
 
 describe("StockTrackingUseCase", () => {
   let useCase: StockTrackingUseCase;
@@ -19,17 +22,17 @@ describe("StockTrackingUseCase", () => {
 
   describe("given one stock", () => {
     beforeAll(() => {
-      inMemoryWebScraper().addStock(new Stock("VALE3"));
+      inMemoryWebScraperGateway().addStock(new Stock("VALE3"));
     });
 
     test("tracks valid stock", async () => {
       await useCase.trackStock("VALE3");
 
-      expect(await inMemoryStockGateway().findAllTickets()).toHaveLength(1);
+      expect(await inMemoryDatabaseGateway().findAllTickets()).toHaveLength(1);
     });
 
     test("fails to track already tracked stock", async () => {
-      await inMemoryStockGateway().saveTicket("VALE3");
+      await inMemoryDatabaseGateway().saveTicket("VALE3");
 
       expect(() => {
         return useCase.trackStock("VALE3");
