@@ -1,4 +1,4 @@
-import { inMemoryStockGateway } from "./utils";
+import { inMemoryStockGateway } from "../utils";
 
 describe("InMemoryStockGateway", () => {
   beforeEach(async () => {

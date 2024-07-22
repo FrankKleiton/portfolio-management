@@ -1,4 +1,4 @@
-import { DatabaseGateway } from "../src/StockGateway";
+import { DatabaseGateway } from "../../src/gateways/StockGateway";
 
 export class InMemoryStockGateway implements DatabaseGateway {
   private tickets: string[] = [];

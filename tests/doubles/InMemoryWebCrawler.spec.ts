@@ -1,5 +1,5 @@
-import { Stock } from "../src/Stock";
-import { inMemoryWebScraper } from "./utils";
+import { Stock } from "../../src/entities/Stock";
+import { inMemoryWebScraper } from "../utils";
 
 describe("InMemoryWebScraper", () => {
   test("can find stock", async () => {

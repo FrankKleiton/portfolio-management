@@ -1,15 +1,15 @@
 import { Context } from "../src/Context";
-import { InMemoryStockGateway } from "./InMemoryStockGateway";
-import { InMemoryWebScraper } from "./InMemoryWebScraper";
+import { InMemoryStockGateway } from "./doubles/InMemoryStockGateway";
+import { InMemoryWebScraperGateway } from "./doubles/InMemoryWebScraperGateway";
 
 beforeAll(() => {
-  Context.stockGateway = new InMemoryStockGateway();
-  Context.webScraper = new InMemoryWebScraper();
+  Context.DatabaseGateway = new InMemoryStockGateway();
+  Context.webScraper = new InMemoryWebScraperGateway();
 });
 
 afterEach(() => {
-  const stockGateway = Context.stockGateway as InMemoryStockGateway;
-  const webScraper = Context.webScraper as InMemoryWebScraper;
+  const stockGateway = Context.DatabaseGateway as InMemoryStockGateway;
+  const webScraper = Context.webScraper as InMemoryWebScraperGateway;
 
   stockGateway.clearAll();
   webScraper.clearAll();

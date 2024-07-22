@@ -1,6 +1,6 @@
-import { StockTrackingUseCase } from "../src/StockTrackingUseCase";
-import { Stock } from "../src/Stock";
-import { inMemoryStockGateway, inMemoryWebScraper } from "./utils";
+import { Stock } from "../../../src/entities/Stock";
+import { StockTrackingUseCase } from "../../../src/usecases/stock-tracking/StockTrackingUseCase";
+import { inMemoryStockGateway, inMemoryWebScraper } from "../../utils";
 
 describe("StockTrackingUseCase", () => {
   let useCase: StockTrackingUseCase;

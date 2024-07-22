@@ -1,8 +1,8 @@
-import { Context } from "./Context";
+import { Context } from "../../Context";
 
 export class StockTrackingUseCase {
   async trackStock(ticket: string) {
-    if (await Context.stockGateway.findTicket(ticket)) {
+    if (await Context.DatabaseGateway.findTicket(ticket)) {
       throw new Error("Existent Stock!");
     }
 
@@ -10,6 +10,6 @@ export class StockTrackingUseCase {
       throw new Error("Invalid Stock!");
     }
 
-    await Context.stockGateway.saveTicket(ticket);
+    await Context.DatabaseGateway.saveTicket(ticket);
   }
 }

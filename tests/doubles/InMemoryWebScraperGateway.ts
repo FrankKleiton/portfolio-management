@@ -1,7 +1,7 @@
-import { Stock } from "../src/Stock";
-import { WebScraper } from "../src/WebScraper";
+import { Stock } from "../../src/entities/Stock";
+import { WebScraperGateway } from "../../src/gateways/WebScraperGateway";
 
-export class InMemoryWebScraper implements WebScraper {
+export class InMemoryWebScraperGateway implements WebScraperGateway {
   private stocks: Stock[] = [];
 
   addStock(stock: Stock) {

@@ -1,6 +1,6 @@
-import { Stock } from "./Stock";
+import { Stock } from "../../entities/Stock";
 
-export class StockDetailsResponseModel {
+export class StockResponseModel {
   private stocks: Stock[] = [];
 
   addStockDetail(stock: Stock) {

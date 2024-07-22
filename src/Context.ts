@@ -1,7 +1,7 @@
-import { DatabaseGateway } from "./StockGateway";
-import { WebScraper } from "./WebScraper";
+import { DatabaseGateway } from "./gateways/StockGateway";
+import { WebScraperGateway } from "./gateways/WebScraperGateway";
 
 export class Context {
-  static stockGateway: DatabaseGateway;
-  static webScraper: WebScraper;
+  static DatabaseGateway: DatabaseGateway;
+  static webScraper: WebScraperGateway;
 }
