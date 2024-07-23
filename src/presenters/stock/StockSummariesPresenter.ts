@@ -7,10 +7,13 @@ import {
 } from "../../usecases/stock-summaries/StockSummariesViewModel";
 
 export class StockPresenter implements StockSummariesOutputBoundary {
-  static format = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format;
+  static format = (value: number) =>
+    new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    })
+      .format(value)
+      .replace(/\s/g, " ");
 
   private viewModel: StockSummariesViewModel | null = null;
 
@@ -29,10 +32,22 @@ export class StockPresenter implements StockSummariesOutputBoundary {
   makeViewableStock(stock: StockSummary): ViewableStockSummary {
     const viewableStockSummary = new ViewableStockSummary();
     viewableStockSummary.ticket = stock.ticket;
+
+    if (stock.freeCashFlow) {
+      viewableStockSummary.freeCashFlow = StockPresenter.format(
+        stock.freeCashFlow
+      );
+    }
+
+    if (stock.freeCashFlowYield) {
+      viewableStockSummary.freeCashFlowYield =
+        stock.freeCashFlowYield * 100 + "%";
+    }
+
     if (stock.marketValue) {
       viewableStockSummary.marketValue = StockPresenter.format(
         stock.marketValue
-      ).replace(/\s/g, " ");
+      );
     }
     return viewableStockSummary;
   }

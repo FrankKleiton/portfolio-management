@@ -1,6 +1,6 @@
-import { Stock } from "../../../src/entities/Stock";
 import { StockPresenter } from "../../../src/presenters/stock/StockSummariesPresenter";
 import { StockSummariesResponseModel } from "../../../src/usecases/stock-summaries/StockSummariesResponseModel";
+import { StockSummary } from "../../../src/usecases/stock-summaries/StockSummary";
 
 describe("StockPresenter", () => {
   let presenter: StockPresenter;
@@ -25,7 +25,13 @@ describe("StockPresenter", () => {
   });
 
   test("given one stock presented", () => {
-    responseModel.addStockSummary(new Stock("VALE3", 1000000));
+    const stockSummary = new StockSummary();
+    stockSummary.ticket = "VALE3";
+    stockSummary.marketValue = 1000000;
+    stockSummary.freeCashFlow = 90000;
+    stockSummary.freeCashFlowYield = 0.09;
+
+    responseModel.addStockSummary(stockSummary);
 
     presenter.present(responseModel);
 
@@ -35,5 +41,7 @@ describe("StockPresenter", () => {
       .at(0);
     expect(viewableStock?.ticket).toBe("VALE3");
     expect(viewableStock?.marketValue).toBe(`R$ 1.000.000,00`);
+    expect(viewableStock?.freeCashFlow).toBe(`R$ 90.000,00`);
+    expect(viewableStock?.freeCashFlowYield).toBe(`9%`);
   });
 });

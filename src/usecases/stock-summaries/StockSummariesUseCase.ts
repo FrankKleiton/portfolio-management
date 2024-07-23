@@ -23,9 +23,12 @@ export class StockSummariesUseCase {
   }
 
   summarizeStock(stock: Stock) {
+    const freeCashFlow = stock.operationalCashFlow + stock.investingCashFlow;
     const summary = new StockSummary();
     summary.marketValue = stock.marketValue;
     summary.ticket = stock.ticket;
+    summary.freeCashFlow = freeCashFlow;
+    summary.freeCashFlowYield = freeCashFlow / stock.marketValue;
     return summary;
   }
 }
