@@ -3,5 +3,5 @@ import { StockSummariesViewModel } from "./StockSummariesViewModel";
 
 export interface StockSummariesOutputBoundary {
   present(responseModel: StockSummariesResponseModel): void;
-  getViewModel(): StockSummariesViewModel | null;
+  getViewModel(): StockSummariesViewModel;
 }

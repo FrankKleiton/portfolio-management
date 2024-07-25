@@ -1,10 +1,11 @@
 import { Context } from "../../Context";
 import { Stock } from "../../entities/Stock";
+import { StockSummariesInputBoundary } from "./StockSummariesInputBoundary";
 import { StockSummariesOutputBoundary } from "./StockSummariesOutputBoundary";
 import { StockSummariesResponseModel } from "./StockSummariesResponseModel";
 import { StockSummary } from "./StockSummary";
 
-export class StockSummariesUseCase {
+export class StockSummariesUseCase implements StockSummariesInputBoundary {
   async summarizeStocks(
     presenter: StockSummariesOutputBoundary
   ): Promise<void> {

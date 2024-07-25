@@ -15,9 +15,9 @@ export class StockPresenter implements StockSummariesOutputBoundary {
       .format(value)
       .replace(/\s/g, " ");
 
-  private viewModel: StockSummariesViewModel | null = null;
+  private viewModel: StockSummariesViewModel = new StockSummariesViewModel();
 
-  getViewModel(): StockSummariesViewModel | null {
+  getViewModel(): StockSummariesViewModel {
     return this.viewModel;
   }
 

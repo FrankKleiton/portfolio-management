@@ -1,4 +1,4 @@
-import { StockPresenter } from "../../../src/presenters/stock/StockSummariesPresenter";
+import { StockPresenter } from "../../../src/presenters/stock-summaries/StockSummariesPresenter";
 import { StockSummariesResponseModel } from "../../../src/usecases/stock-summaries/StockSummariesResponseModel";
 import { StockSummary } from "../../../src/usecases/stock-summaries/StockSummary";
 

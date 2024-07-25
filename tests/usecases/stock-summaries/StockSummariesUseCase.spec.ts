@@ -4,20 +4,7 @@ import {
   inMemoryDatabaseGateway,
   inMemoryWebScraperGateway,
 } from "../../utils";
-import { StockSummariesOutputBoundary } from "../../../src/usecases/stock-summaries/StockSummariesOutputBoundary";
-import { StockSummariesResponseModel } from "../../../src/usecases/stock-summaries/StockSummariesResponseModel";
-import { StockSummariesViewModel } from "../../../src/usecases/stock-summaries/StockSummariesViewModel";
-
-class StockSummariesPresenterSpy implements StockSummariesOutputBoundary {
-  getViewModel(): StockSummariesViewModel | null {
-    throw new Error("Method not implemented.");
-  }
-  public responseModel: StockSummariesResponseModel | null = null;
-
-  present(responseModel: StockSummariesResponseModel) {
-    this.responseModel = responseModel;
-  }
-}
+import { StockSummariesPresenterSpy } from "../../mocks/StockSummariesPresenterSpy";
 
 describe("StockSummariesUseCase", () => {
   let useCase: StockSummariesUseCase;
