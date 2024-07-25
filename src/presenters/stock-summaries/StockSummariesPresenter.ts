@@ -6,7 +6,7 @@ import {
   ViewableStockSummary,
 } from "../../views/stock-summaries/StockSummariesViewModel";
 
-export class StockPresenter implements StockSummariesOutputBoundary {
+export class StockSummariesPresenter implements StockSummariesOutputBoundary {
   static format = (value: number) =>
     new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -34,7 +34,7 @@ export class StockPresenter implements StockSummariesOutputBoundary {
     viewableStockSummary.ticket = stock.ticket;
 
     if (stock.freeCashFlow) {
-      viewableStockSummary.freeCashFlow = StockPresenter.format(
+      viewableStockSummary.freeCashFlow = StockSummariesPresenter.format(
         stock.freeCashFlow
       );
     }
@@ -45,7 +45,7 @@ export class StockPresenter implements StockSummariesOutputBoundary {
     }
 
     if (stock.marketValue) {
-      viewableStockSummary.marketValue = StockPresenter.format(
+      viewableStockSummary.marketValue = StockSummariesPresenter.format(
         stock.marketValue
       );
     }

@@ -1,5 +1,5 @@
 import { StockSummariesController } from "../../../src/controllers/stock-summaries/StockSummariesController";
-import { ParsedRequest } from "../../../src/http/ParsedRequest";
+import { Request } from "../../../src/http/Request";
 import { StockSummariesResponseModel } from "../../../src/usecases/stock-summaries/StockSummariesResponseModel";
 import { StockSummary } from "../../../src/usecases/stock-summaries/StockSummary";
 import { StockSummariesPresenterSpy } from "../../mocks/StockSummariesPresenterSpy";
@@ -26,17 +26,13 @@ describe("StockSummariesController", () => {
     controller = new StockSummariesController(useCase, presenter, view);
   });
   test("usecase boundary", async () => {
-    const request = new ParsedRequest();
-
-    await controller.handle(request);
+    await controller.handle(new Request());
 
     expect(useCase.wasExecuted).toBeTruthy();
   });
 
   test("presenter boundary", async () => {
-    const request = new ParsedRequest();
-
-    await controller.handle(request);
+    await controller.handle(new Request());
 
     expect(presenter.getViewModel()?.getViewableStockSummaries()).toHaveLength(
       3
@@ -44,9 +40,7 @@ describe("StockSummariesController", () => {
   });
 
   test("view boundary", async () => {
-    const request = new ParsedRequest();
-
-    const result = await controller.handle(request);
+    const result = await controller.handle(new Request());
 
     expect(result).toBe("");
     expect(presenter.getViewModel()).toBe(view.getViewModel());

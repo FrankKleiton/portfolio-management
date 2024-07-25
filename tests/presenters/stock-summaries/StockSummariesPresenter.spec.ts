@@ -1,13 +1,13 @@
-import { StockPresenter } from "../../../src/presenters/stock-summaries/StockSummariesPresenter";
+import { StockSummariesPresenter } from "../../../src/presenters/stock-summaries/StockSummariesPresenter";
 import { StockSummariesResponseModel } from "../../../src/usecases/stock-summaries/StockSummariesResponseModel";
 import { StockSummary } from "../../../src/usecases/stock-summaries/StockSummary";
 
 describe("StockPresenter", () => {
-  let presenter: StockPresenter;
+  let presenter: StockSummariesPresenter;
   let responseModel: StockSummariesResponseModel;
 
   beforeEach(() => {
-    presenter = new StockPresenter();
+    presenter = new StockSummariesPresenter();
     responseModel = new StockSummariesResponseModel();
   });
   test("presenter wiring", () => {
