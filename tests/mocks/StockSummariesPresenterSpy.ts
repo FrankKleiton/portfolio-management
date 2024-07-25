@@ -3,7 +3,7 @@ import { StockSummariesResponseModel } from "../../src/usecases/stock-summaries/
 import {
   StockSummariesViewModel,
   ViewableStockSummary,
-} from "../../src/usecases/stock-summaries/StockSummariesViewModel";
+} from "../../src/views/stock-summaries/StockSummariesViewModel";
 
 export class StockSummariesPresenterSpy
   implements StockSummariesOutputBoundary

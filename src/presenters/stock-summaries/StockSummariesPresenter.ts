@@ -4,7 +4,7 @@ import { StockSummary } from "../../usecases/stock-summaries/StockSummary";
 import {
   StockSummariesViewModel,
   ViewableStockSummary,
-} from "../../usecases/stock-summaries/StockSummariesViewModel";
+} from "../../views/stock-summaries/StockSummariesViewModel";
 
 export class StockPresenter implements StockSummariesOutputBoundary {
   static format = (value: number) =>

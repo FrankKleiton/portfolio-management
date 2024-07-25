@@ -1,7 +1,7 @@
 import { ParsedRequest } from "../../http/ParsedRequest";
-import { StockSummariesInputBoundary } from "../../usecases/stock-summaries/StockSummariesInputBoundary";
 import { StockSummariesOutputBoundary } from "../../usecases/stock-summaries/StockSummariesOutputBoundary";
-import { StockSummariesView } from "../../usecases/stock-summaries/StockSummariesView";
+import { StockSummariesView } from "../../views/stock-summaries/StockSummariesView";
+import { StockSummariesInputBoundary } from "../../usecases/stock-summaries/StockSummariesInputBoundary";
 
 export class StockSummariesController {
   constructor(

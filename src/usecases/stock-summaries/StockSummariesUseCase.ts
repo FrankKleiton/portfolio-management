@@ -1,6 +1,6 @@
 import { Context } from "../../Context";
-import { Stock } from "../../entities/Stock";
 import { StockSummariesInputBoundary } from "./StockSummariesInputBoundary";
+import { Stock } from "../../entities/Stock";
 import { StockSummariesOutputBoundary } from "./StockSummariesOutputBoundary";
 import { StockSummariesResponseModel } from "./StockSummariesResponseModel";
 import { StockSummary } from "./StockSummary";
