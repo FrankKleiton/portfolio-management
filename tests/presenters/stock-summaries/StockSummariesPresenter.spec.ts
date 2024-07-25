@@ -28,8 +28,6 @@ describe("StockPresenter", () => {
     const stockSummary = new StockSummary();
     stockSummary.ticket = "VALE3";
     stockSummary.marketValue = 1000000;
-    stockSummary.freeCashFlow = 90000;
-    stockSummary.freeCashFlowYield = 0.09;
 
     responseModel.addStockSummary(stockSummary);
 
@@ -41,7 +39,5 @@ describe("StockPresenter", () => {
       .at(0);
     expect(viewableStock?.ticket).toBe("VALE3");
     expect(viewableStock?.marketValue).toBe(`R$ 1.000.000,00`);
-    expect(viewableStock?.freeCashFlow).toBe(`R$ 90.000,00`);
-    expect(viewableStock?.freeCashFlowYield).toBe(`9%`);
   });
 });

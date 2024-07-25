@@ -40,8 +40,6 @@ describe("StockSummariesUseCase", () => {
       const summaries = presenterSpy.responseModel?.getStockSummaries();
       expect(summaries).toHaveLength(1);
       expect(summaries?.at(0)?.marketValue).toBe(1000);
-      expect(summaries?.at(0)?.freeCashFlow).toBe(90);
-      expect(summaries?.at(0)?.freeCashFlowYield).toBe(0.09);
       expect(summaries?.at(0)?.ticket).toBe("VALE3");
     });
   });

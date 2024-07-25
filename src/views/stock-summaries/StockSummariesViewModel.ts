@@ -12,6 +12,4 @@ export class StockSummariesViewModel {
 export class ViewableStockSummary {
   public ticket?: string;
   public marketValue?: string;
-  public freeCashFlow?: string;
-  public freeCashFlowYield?: string;
 }

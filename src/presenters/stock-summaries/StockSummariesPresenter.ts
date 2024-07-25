@@ -33,17 +33,6 @@ export class StockSummariesPresenter implements StockSummariesOutputBoundary {
     const viewableStockSummary = new ViewableStockSummary();
     viewableStockSummary.ticket = stock.ticket;
 
-    if (stock.freeCashFlow) {
-      viewableStockSummary.freeCashFlow = StockSummariesPresenter.format(
-        stock.freeCashFlow
-      );
-    }
-
-    if (stock.freeCashFlowYield) {
-      viewableStockSummary.freeCashFlowYield =
-        stock.freeCashFlowYield * 100 + "%";
-    }
-
     if (stock.marketValue) {
       viewableStockSummary.marketValue = StockSummariesPresenter.format(
         stock.marketValue
