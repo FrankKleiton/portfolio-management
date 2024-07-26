@@ -22,4 +22,8 @@ export class StockSummariesPresenterSpy
       this.viewModel?.addModel(new ViewableStockSummary());
     }
   }
+
+  clearAll() {
+    this.viewModel = new StockSummariesViewModel();
+  }
 }

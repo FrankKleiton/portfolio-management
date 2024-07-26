@@ -14,10 +14,11 @@ describe("StockSummariesUseCase", () => {
 
   beforeAll(() => {
     useCase = new StockSummariesUseCase();
+    presenterSpy = new StockSummariesPresenterSpy();
   });
 
   beforeEach(() => {
-    presenterSpy = new StockSummariesPresenterSpy();
+    presenterSpy.clearAll();
   });
 
   describe("summarizeStocks", () => {
