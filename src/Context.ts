@@ -1,5 +1,5 @@
-import { DatabaseGateway } from "./gateways/StockGateway";
-import { WebScraperGateway } from "./gateways/WebScraperGateway";
+import { DatabaseGateway } from "./usecases/StockGateway";
+import { WebScraperGateway } from "./usecases/WebScraperGateway";
 
 export class Context {
   static databaseGateway: DatabaseGateway;

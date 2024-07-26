@@ -1,27 +1,46 @@
-import { StockSummariesView } from "./StockSummariesView";
-import { StockSummariesViewModel } from "./StockSummariesViewModel";
-import { readFileSync } from "node:fs";
 import path from "node:path";
+
+import { ViewTemplate } from "../ViewTemplate";
+import { StockSummariesView } from "./StockSummariesView";
+import {
+  StockSummariesViewModel,
+  ViewableStockSummary,
+} from "./StockSummariesViewModel";
 
 export class StockSummariesViewImpl implements StockSummariesView {
   generateView(viewModel: StockSummariesViewModel): string {
-    let html = readFileSync(
-      path.join(__dirname, "..", "..", "..", "public/index.html"),
-      {
-        encoding: "utf-8",
-      }
+    return this.toHtml(viewModel.getViewableStockSummaries());
+  }
+
+  private toHtml(viewableStockSummaries: ViewableStockSummary[]) {
+    const frontPageTemplate = ViewTemplate.create(
+      path.join(__dirname, "..", "..", "..", "public/index.html")
     );
 
-    let stocksOverview = "";
-    for (const viewableStockSumary of viewModel.getViewableStockSummaries()) {
-      stocksOverview += `
-        <tr>
-          <td>${viewableStockSumary.ticket}</td>
-          <td>${viewableStockSumary.marketValue}</td>
-        </tr>
-      `;
-    }
+    const stocksOverview = this.stocksOverviewTemplate(viewableStockSummaries);
 
-    return html.replace("{{stocksOverview}}", stocksOverview);
+    frontPageTemplate.replace("stocksOverview", stocksOverview);
+
+    return frontPageTemplate.getContent();
+  }
+
+  private stocksOverviewTemplate(
+    viewableStockSummaries: ViewableStockSummary[]
+  ) {
+    let result = "";
+
+    for (const viewableStockSumary of viewableStockSummaries) {
+      const stockTemplate = ViewTemplate.create(
+        `${__dirname}/../../../public/stock.html`
+      );
+
+      stockTemplate.replace("ticket", viewableStockSumary.ticket || "Gunk");
+      stockTemplate.replace(
+        "marketValue",
+        viewableStockSumary.marketValue || "Gunk"
+      );
+      result += stockTemplate.getContent();
+    }
+    return result;
   }
 }
