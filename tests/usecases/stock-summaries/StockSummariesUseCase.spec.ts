@@ -69,18 +69,25 @@ describe("StockSummariesUseCase", () => {
     });
 
     describe("given more than one cashflow", () => {
+      beforeEach(() => {
+        inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(1000, -100, new Year(2021))
+        );
+        inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(2000, -200, new Year(2020))
+        );
+      });
       test("sort by year", async () => {
-        inMemoryWebScraperGateway().addCashFlow(
-          "VALE3",
-          new CashFlow(1000, 100, new Year(2021))
-        );
-        inMemoryWebScraperGateway().addCashFlow(
-          "VALE3",
-          new CashFlow(2000, 200, new Year(2020))
-        );
-
         const cashFlows = await useCase.getOrderedCashFlows("VALE3");
         expect(cashFlows.at(0)?.getYear().equals(new Year(2020))).toBeTruthy();
+      });
+
+      test("calculate free cash flow", async () => {
+        const cashFlows = await useCase.getOrderedCashFlows("VALE3");
+        expect(cashFlows.at(0)?.freeCashFlow).toBe(1800);
+        expect(cashFlows.at(1)?.freeCashFlow).toBe(900);
       });
     });
   });

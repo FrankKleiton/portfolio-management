@@ -10,4 +10,8 @@ export class CashFlow {
   getYear() {
     return this.year;
   }
+
+  get freeCashFlow() {
+    return this.operational + this.investing;
+  }
 }

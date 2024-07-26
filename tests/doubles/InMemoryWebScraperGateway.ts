@@ -27,5 +27,6 @@ export class InMemoryWebScraperGateway implements WebScraperGateway {
 
   clearAll() {
     this.stocks = [];
+    this.cashFlows = {};
   }
 }
