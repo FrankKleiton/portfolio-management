@@ -12,5 +12,8 @@ afterEach(() => {
   const webScraper = Context.webScraperGateway as InMemoryWebScraperGateway;
 
   stockGateway.clearAll();
-  webScraper.clearAll();
+
+  if (webScraper.clearAll) {
+    webScraper.clearAll();
+  }
 });

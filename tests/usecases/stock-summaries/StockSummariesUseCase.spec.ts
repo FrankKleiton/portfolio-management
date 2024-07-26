@@ -10,8 +10,10 @@ describe("StockSummariesUseCase", () => {
   let useCase: StockSummariesUseCase;
   let presenterSpy: StockSummariesPresenterSpy;
 
-  beforeEach(() => {
+  beforeAll(() => {
     useCase = new StockSummariesUseCase();
+  });
+  beforeEach(() => {
     presenterSpy = new StockSummariesPresenterSpy();
   });
 
