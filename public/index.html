@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financial Data Overview</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f7f7f7;
+        color: #333;
+      }
+      .header {
+        background-color: #2c3e50;
+        color: white;
+        text-align: center;
+        padding: 1em 0;
+        margin-bottom: 20px;
+      }
+      .container {
+        width: 90%;
+        margin: 0 auto;
+      }
+      .search-bar {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .search-bar input[type="text"] {
+        width: 300px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .table-container {
+        margin-bottom: 30px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: right;
+      }
+      th {
+        background-color: #34495e;
+        color: white;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #2c3e50;
+        color: white;
+        margin-top: 20px;
+      }
+      .table-container h2 {
+        color: #2c3e50;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Financial Data Overview</h1>
+    </div>
+
+    <div class="container">
+      <div class="search-bar">
+        <input type="text" placeholder="Add a stock ticker..." />
+      </div>
+
+      <div class="table-container">
+        <h2>Market Value</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Stock</th>
+              <th>Market Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{stocksOverview}}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container">
+        <h2>Free Cash Flow (FCF)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>FCF</th>
+              <th>2023</th>
+              <th>2022</th>
+              <th>2021</th>
+              <th>2020</th>
+              <th>2019</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kepl3</td>
+              <td>R$ 213.900.000,00</td>
+              <td>R$ 210.760.000,00</td>
+              <td>R$ 28.250.000,00</td>
+              <td>R$ 267.440.000,00</td>
+              <td>R$ 67.790.000,00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container">
+        <h2>Free Cash Flow Yield (FCFY)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>FCFY</th>
+              <th>2023</th>
+              <th>2022</th>
+              <th>2021</th>
+              <th>2020</th>
+              <th>2019</th>
+              <th>2019-2023 Average</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kepl3</td>
+              <td>12,02%</td>
+              <td>11,85%</td>
+              <td>1,59%</td>
+              <td>15,03%</td>
+              <td>3,81%</td>
+              <td>8,86%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container">
+        <h2>Portfolio</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Stock</th>
+              <th>Value</th>
+              <th>Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kepl3</td>
+              <td>R$ 57.103,20</td>
+              <td>19,17%</td>
+            </tr>
+
+            <tr>
+              <td>Total</td>
+              <td>R$ 297.834,22</td>
+              <td>100,00%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-container">
+        <h2>Weighted Free Cash Flow Yield (WFCFY)</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>WFCFY</th>
+              <th>2023</th>
+              <th>2022</th>
+              <th>2021</th>
+              <th>2020</th>
+              <th>2019</th>
+              <th>Average</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Kepl3</td>
+              <td>2,30%</td>
+              <td>2,27%</td>
+              <td>0,30%</td>
+              <td>2,88%</td>
+              <td>0,73%</td>
+              <td>1,70%</td>
+            </tr>
+
+            <tr>
+              <td>Total</td>
+              <td>6,30%</td>
+              <td>18,12%</td>
+              <td>7,50%</td>
+              <td>12,59%</td>
+              <td>6,40%</td>
+              <td>10,18%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="footer">&copy; 2024 Financial Data Overview</div>
+  </body>
+</html>

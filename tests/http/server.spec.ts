@@ -13,7 +13,8 @@ describe("Http", () => {
   });
 
   test("get stocks", async () => {
-    const response = await request(server.app).get("/stocks");
-    expect(response.text).toBe("hey");
+    const response = await request(server.app).get("/");
+    expect(response.text).toMatch(/VALE3/);
+    expect(response.text).toMatch(/R\$ 1.000,00/);
   });
 });
