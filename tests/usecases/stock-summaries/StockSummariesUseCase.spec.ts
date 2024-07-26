@@ -5,6 +5,8 @@ import {
   inMemoryWebScraperGateway,
 } from "../../utils";
 import { StockSummariesPresenterSpy } from "../../mocks/StockSummariesPresenterSpy";
+import { Year } from "../../../src/entities/Year";
+import { CashFlow } from "../../../src/entities/CashFlow";
 
 describe("StockSummariesUseCase", () => {
   let useCase: StockSummariesUseCase;
@@ -13,6 +15,7 @@ describe("StockSummariesUseCase", () => {
   beforeAll(() => {
     useCase = new StockSummariesUseCase();
   });
+
   beforeEach(() => {
     presenterSpy = new StockSummariesPresenterSpy();
   });
@@ -45,6 +48,59 @@ describe("StockSummariesUseCase", () => {
         expect(summaries?.at(0)?.marketValue).toBe(1000);
         expect(summaries?.at(0)?.ticket).toBe("VALE3");
       });
+    });
+  });
+
+  describe("getOrderedCashFlows", () => {
+    describe("given no cash flows", () => {
+      test("got none cashflows", async () => {
+        expect(await useCase.getOrderedCashFlows("VALE3")).toHaveLength(0);
+      });
+    });
+
+    describe("given one cashflow", () => {
+      test("got one cashflow", async () => {
+        inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(1000, 100, new Year(2021))
+        );
+        expect(await useCase.getOrderedCashFlows("VALE3")).toHaveLength(1);
+      });
+    });
+
+    describe("given more than one cashflow", () => {
+      test("sort by year", async () => {
+        inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(1000, 100, new Year(2021))
+        );
+        inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(2000, 200, new Year(2020))
+        );
+
+        const cashFlows = await useCase.getOrderedCashFlows("VALE3");
+        expect(cashFlows.at(0)?.getYear().equals(new Year(2020))).toBeTruthy();
+      });
+    });
+  });
+
+  describe("year", () => {
+    let twentyOne: Year;
+    let twentyTwo: Year;
+
+    beforeAll(() => {
+      twentyOne = new Year(2021);
+      twentyTwo = new Year(2022);
+    });
+
+    test("year equality", () => {
+      expect(twentyOne.equals(twentyOne)).toBeTruthy();
+      expect(twentyOne.equals(twentyTwo)).toBeFalsy();
+    });
+
+    test("year greater than", () => {
+      expect(twentyOne.greaterThen(twentyTwo)).toBeFalsy();
     });
   });
 });

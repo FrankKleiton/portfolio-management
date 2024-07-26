@@ -2,8 +2,12 @@ import cheerio from "cheerio";
 
 import { Stock } from "../entities/Stock";
 import { WebScraperGateway } from "../usecases/WebScraperGateway";
+import { CashFlow } from "../entities/CashFlow";
 
 export class StatusInvestWebScraper implements WebScraperGateway {
+  async collectCashFlows(ticket: string): Promise<CashFlow[]> {
+    return [];
+  }
   async collectStock(ticket: string): Promise<Stock | undefined> {
     const response = await fetch(`https://statusinvest.com.br/acoes/${ticket}`);
 
