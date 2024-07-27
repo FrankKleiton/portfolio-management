@@ -40,9 +40,7 @@ describe("StockSummariesController", () => {
   });
 
   test("view boundary", async () => {
-    const result = await controller.handle(new Request());
-
-    expect(result).toBe("");
+    expect(await controller.handle(new Request())).toBe("");
     expect(presenter.getViewModel()).toBe(view.getViewModel());
   });
 });

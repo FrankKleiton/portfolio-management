@@ -5,16 +5,17 @@ import { StockSummariesOutputBoundary } from "./StockSummariesOutputBoundary";
 import { StockSummariesResponseModel } from "./StockSummariesResponseModel";
 import { StockSummary } from "./StockSummary";
 import { CashFlow } from "../../entities/CashFlow";
+import { PerformanceValue } from "../../entities/PerformanceValue";
 
 export class StockSummariesUseCase implements StockSummariesInputBoundary {
   async getOrderedCashFlows(ticket: string): Promise<CashFlow[]> {
     let cashFlows = await Context.webScraperGateway.collectCashFlows(ticket);
 
     cashFlows = cashFlows.sort((a, b) => {
-      if (a.getYear().equals(b.getYear())) {
+      if (a.year.equals(b.year)) {
         return 0;
       }
-      if (a.getYear().greaterThen(b.getYear())) {
+      if (a.year.greaterThen(b.year)) {
         return 1;
       }
       return -1;
@@ -22,6 +23,13 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
 
     return cashFlows;
   }
+
+  calculateFreeCashFlows(cashFlows: CashFlow[]) {
+    return cashFlows.map(
+      (cf) => new PerformanceValue(cf.operational + cf.investing, cf.year)
+    );
+  }
+
   async summarizeStocks(
     presenter: StockSummariesOutputBoundary
   ): Promise<void> {
@@ -32,17 +40,23 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
       const stock = await Context.webScraperGateway.collectStock(ticket);
 
       if (stock) {
-        responseModel.addStockSummary(this.summarizeStock(stock));
+        const cashFlows = await this.getOrderedCashFlows(ticket);
+        const freeCashFlows = this.calculateFreeCashFlows(cashFlows);
+
+        responseModel.addStockSummary(
+          this.summarizeStock(stock, freeCashFlows)
+        );
       }
     }
 
     presenter.present(responseModel);
   }
 
-  summarizeStock(stock: Stock) {
+  summarizeStock(stock: Stock, freeCashFlows: PerformanceValue[]) {
     const summary = new StockSummary();
     summary.marketValue = stock.marketValue;
     summary.ticket = stock.ticket;
+    summary.freeCashFlows = freeCashFlows;
     return summary;
   }
 }

@@ -7,6 +7,7 @@ import {
 import { StockSummariesPresenterSpy } from "../../mocks/StockSummariesPresenterSpy";
 import { Year } from "../../../src/entities/Year";
 import { CashFlow } from "../../../src/entities/CashFlow";
+import { PerformanceValue } from "../../../src/entities/PerformanceValue";
 
 describe("StockSummariesUseCase", () => {
   let useCase: StockSummariesUseCase;
@@ -42,12 +43,22 @@ describe("StockSummariesUseCase", () => {
         await inMemoryWebScraperGateway().addStock(
           new Stock("VALE3", 1000, 100, -10)
         );
+        await inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(1000, -100, new Year(2020))
+        );
         await useCase.summarizeStocks(presenterSpy);
 
         const summaries = presenterSpy.responseModel?.getStockSummaries();
         expect(summaries).toHaveLength(1);
         expect(summaries?.at(0)?.marketValue).toBe(1000);
         expect(summaries?.at(0)?.ticket).toBe("VALE3");
+        expect(
+          summaries
+            ?.at(0)
+            ?.freeCashFlows?.at(0)
+            ?.equals(new PerformanceValue(900, new Year(2020)))
+        ).toBeTruthy();
       });
     });
   });
@@ -82,13 +93,7 @@ describe("StockSummariesUseCase", () => {
       });
       test("sort by year", async () => {
         const cashFlows = await useCase.getOrderedCashFlows("VALE3");
-        expect(cashFlows.at(0)?.getYear().equals(new Year(2020))).toBeTruthy();
-      });
-
-      test("calculate free cash flow", async () => {
-        const cashFlows = await useCase.getOrderedCashFlows("VALE3");
-        expect(cashFlows.at(0)?.freeCashFlow).toBe(1800);
-        expect(cashFlows.at(1)?.freeCashFlow).toBe(900);
+        expect(cashFlows.at(0)?.year.equals(new Year(2020))).toBeTruthy();
       });
     });
   });
