@@ -2,7 +2,7 @@ import request from "supertest";
 
 import { Stock } from "../../src/entities/Stock";
 import { inMemoryDatabaseGateway, inMemoryWebScraperGateway } from "../utils";
-import { server } from "../../src/bootstrap";
+import { server } from "../../src/Bootstrap";
 
 describe("Http", () => {
   beforeAll(() => {
