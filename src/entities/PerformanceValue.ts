@@ -1,7 +1,7 @@
 import { Year } from "./Year";
 
 export class PerformanceValue {
-  constructor(private value: number, private year: Year) {}
+  constructor(public value: number, public year: Year) {}
 
   equals(performanceValue: PerformanceValue) {
     return (

@@ -1,5 +1,5 @@
 export class Year {
-  constructor(private value: number) {}
+  constructor(public value: number) {}
 
   equals(year: Year) {
     return this.value === year.value;

@@ -1,15 +1,21 @@
 export class StockSummariesViewModel {
-  private viewableStockSummaries: ViewableStockSummary[] = [];
+  private formattedStockSummaries: FormattedStockSummary[] = [];
 
-  addModel(viewableStockSummary: ViewableStockSummary) {
-    this.viewableStockSummaries.push(viewableStockSummary);
+  addModel(formattedStockSummary: FormattedStockSummary) {
+    this.formattedStockSummaries.push(formattedStockSummary);
   }
-  getViewableStockSummaries(): ViewableStockSummary[] {
-    return this.viewableStockSummaries;
+  getFormattedStockSummaries(): FormattedStockSummary[] {
+    return this.formattedStockSummaries;
   }
 }
 
-export class ViewableStockSummary {
+export class FormattedStockSummary {
   public ticket?: string;
   public marketValue?: string;
+  public freeCashFlows?: FormattedFreeCashFlow[];
+}
+
+export class FormattedFreeCashFlow {
+  public value?: string;
+  public year?: number;
 }

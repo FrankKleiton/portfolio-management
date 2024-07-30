@@ -2,7 +2,7 @@ import { StockSummariesOutputBoundary } from "../../src/usecases/stock-summaries
 import { StockSummariesResponseModel } from "../../src/usecases/stock-summaries/StockSummariesResponseModel";
 import {
   StockSummariesViewModel,
-  ViewableStockSummary,
+  FormattedStockSummary,
 } from "../../src/views/stock-summaries/StockSummariesViewModel";
 
 export class StockSummariesPresenterSpy
@@ -19,7 +19,7 @@ export class StockSummariesPresenterSpy
     this.viewModel = new StockSummariesViewModel();
 
     for (const stockSummary of responseModel.getStockSummaries()) {
-      this.viewModel?.addModel(new ViewableStockSummary());
+      this.viewModel?.addModel(new FormattedStockSummary());
     }
   }
 

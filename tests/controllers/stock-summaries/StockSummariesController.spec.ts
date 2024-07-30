@@ -34,7 +34,7 @@ describe("StockSummariesController", () => {
   test("presenter boundary", async () => {
     await controller.handle(new Request());
 
-    expect(presenter.getViewModel()?.getViewableStockSummaries()).toHaveLength(
+    expect(presenter.getViewModel()?.getFormattedStockSummaries()).toHaveLength(
       3
     );
   });

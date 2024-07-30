@@ -1,3 +1,5 @@
+import { PerformanceValue } from "../../../src/entities/PerformanceValue";
+import { Year } from "../../../src/entities/Year";
 import { StockSummariesPresenter } from "../../../src/presenters/stock-summaries/StockSummariesPresenter";
 import { StockSummariesResponseModel } from "../../../src/usecases/stock-summaries/StockSummariesResponseModel";
 import { StockSummary } from "../../../src/usecases/stock-summaries/StockSummary";
@@ -19,7 +21,7 @@ describe("StockPresenter", () => {
   test("given no stocks presented", () => {
     presenter.present(responseModel);
 
-    expect(presenter.getViewModel()?.getViewableStockSummaries()).toHaveLength(
+    expect(presenter.getViewModel()?.getFormattedStockSummaries()).toHaveLength(
       0
     );
   });
@@ -28,16 +30,20 @@ describe("StockPresenter", () => {
     const stockSummary = new StockSummary();
     stockSummary.ticket = "VALE3";
     stockSummary.marketValue = 1000000;
+    stockSummary.freeCashFlows = [
+      new PerformanceValue(1000000, new Year(2021)),
+    ];
 
     responseModel.addStockSummary(stockSummary);
 
     presenter.present(responseModel);
 
-    const viewableStock = presenter
+    const formattedStock = presenter
       .getViewModel()
-      ?.getViewableStockSummaries()
+      ?.getFormattedStockSummaries()
       .at(0);
-    expect(viewableStock?.ticket).toBe("VALE3");
-    expect(viewableStock?.marketValue).toBe(`R$ 1.000.000,00`);
+    expect(formattedStock?.ticket).toBe("VALE3");
+    expect(formattedStock?.marketValue).toBe(`R$ 1.000.000,00`);
+    expect(formattedStock?.freeCashFlows?.at(0)?.value).toBe("R$ 1.000.000,00");
   });
 });

@@ -3,7 +3,8 @@ import { StockSummariesResponseModel } from "../../usecases/stock-summaries/Stoc
 import { StockSummary } from "../../usecases/stock-summaries/StockSummary";
 import {
   StockSummariesViewModel,
-  ViewableStockSummary,
+  FormattedFreeCashFlow,
+  FormattedStockSummary,
 } from "../../views/stock-summaries/StockSummariesViewModel";
 
 export class StockSummariesPresenter implements StockSummariesOutputBoundary {
@@ -25,19 +26,28 @@ export class StockSummariesPresenter implements StockSummariesOutputBoundary {
     this.viewModel = new StockSummariesViewModel();
 
     for (let stock of responseModel.getStockSummaries()) {
-      this.viewModel.addModel(this.makeViewableStock(stock));
+      this.viewModel.addModel(this.makeFormattedStock(stock));
     }
   }
 
-  makeViewableStock(stock: StockSummary): ViewableStockSummary {
-    const viewableStockSummary = new ViewableStockSummary();
-    viewableStockSummary.ticket = stock.ticket;
+  makeFormattedStock(stock: StockSummary): FormattedStockSummary {
+    const formattedStockSummary = new FormattedStockSummary();
+    formattedStockSummary.ticket = stock.ticket;
 
     if (stock.marketValue) {
-      viewableStockSummary.marketValue = StockSummariesPresenter.format(
+      formattedStockSummary.marketValue = StockSummariesPresenter.format(
         stock.marketValue
       );
     }
-    return viewableStockSummary;
+
+    if (stock.freeCashFlows) {
+      formattedStockSummary.freeCashFlows = stock.freeCashFlows.map((sf) => {
+        const formattedFreeCashFlow = new FormattedFreeCashFlow();
+        formattedFreeCashFlow.value = StockSummariesPresenter.format(sf.value);
+        formattedFreeCashFlow.year = sf.year.value;
+        return formattedFreeCashFlow;
+      });
+    }
+    return formattedStockSummary;
   }
 }

@@ -4,20 +4,20 @@ import { ViewTemplate } from "../ViewTemplate";
 import { StockSummariesView } from "./StockSummariesView";
 import {
   StockSummariesViewModel,
-  ViewableStockSummary,
+  FormattedStockSummary,
 } from "./StockSummariesViewModel";
 
 export class StockSummariesViewImpl implements StockSummariesView {
   generateView(viewModel: StockSummariesViewModel): string {
-    return this.toHtml(viewModel.getViewableStockSummaries());
+    return this.toHtml(viewModel.getFormattedStockSummaries());
   }
 
-  private toHtml(viewableStockSummaries: ViewableStockSummary[]) {
+  private toHtml(formattedStockSummaries: FormattedStockSummary[]) {
     const frontPageTemplate = ViewTemplate.create(
       path.join(__dirname, "..", "..", "..", "public/index.html")
     );
 
-    const stocksOverview = this.stocksOverviewTemplate(viewableStockSummaries);
+    const stocksOverview = this.stocksOverviewTemplate(formattedStockSummaries);
 
     frontPageTemplate.replace("stocksOverview", stocksOverview);
 
@@ -25,19 +25,19 @@ export class StockSummariesViewImpl implements StockSummariesView {
   }
 
   private stocksOverviewTemplate(
-    viewableStockSummaries: ViewableStockSummary[]
+    formattedStockSummaries: FormattedStockSummary[]
   ) {
     let result = "";
 
-    for (const viewableStockSumary of viewableStockSummaries) {
+    for (const formattedStockSummary of formattedStockSummaries) {
       const stockTemplate = ViewTemplate.create(
         `${__dirname}/../../../public/stock.html`
       );
 
-      stockTemplate.replace("ticket", viewableStockSumary.ticket || "Gunk");
+      stockTemplate.replace("ticket", formattedStockSummary.ticket || "Gunk");
       stockTemplate.replace(
         "marketValue",
-        viewableStockSumary.marketValue || "Gunk"
+        formattedStockSummary.marketValue || "Gunk"
       );
       result += stockTemplate.getContent();
     }
