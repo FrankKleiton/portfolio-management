@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch",
-    "start": "ts-node ./src/main.ts"
+    "start": "ts-node ./src/Main.ts"
   },
   "keywords": [],
   "author": "",

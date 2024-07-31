@@ -16,6 +16,7 @@ async function html(ticket: string) {
     browser = await puppeteer.launch({
       headless: false,
       defaultViewport: null,
+      args: ["--no-sandbox"],
     });
 
     const page = await browser.newPage();

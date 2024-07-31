@@ -1,3 +1,3 @@
 import { server } from "./Bootstrap";
 
-server.start(3400);
+server.start(3000);
