@@ -1,5 +1,17 @@
 import { Year } from "./Year";
-
+class NumericParser {
+  parse(value: string) {
+    const amounts: { [key: string]: number } = {
+      M: 1000000,
+      B: 1000000000,
+    };
+    const suffix = value.at(-1) || "M";
+    return (
+      Number.parseFloat(value.replace(` ${suffix}`, "").replace(/\,/g, ".")) *
+      +amounts[suffix]
+    );
+  }
+}
 export class PerformanceValue {
   constructor(public value: number, public year: Year) {}
 
