@@ -74,7 +74,7 @@ export class StatusInvestWebScraper implements WebScraperGateway {
     );
 
     const investingValuesTd = $(
-      "#contabil-section > div:nth-child(1) > div > div:nth-child(4) > div.scroll > div > table > tbody > tr:nth-child(3) > td"
+      "#contabil-section > div:nth-child(1) > div > div:nth-child(4) > div.scroll > div > table > tbody > tr:nth-child(7) > td"
     );
 
     const getTableValues = (elementInstance: cheerio.Cheerio) => {

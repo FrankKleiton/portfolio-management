@@ -5,6 +5,7 @@ import { StockSummariesView } from "./StockSummariesView";
 import {
   StockSummariesViewModel,
   FormattedStockSummary,
+  FormattedFreeCashFlow,
 } from "./StockSummariesViewModel";
 
 export class StockSummariesViewImpl implements StockSummariesView {
@@ -20,6 +21,10 @@ export class StockSummariesViewImpl implements StockSummariesView {
     const stocksOverview = this.stocksOverviewTemplate(formattedStockSummaries);
 
     frontPageTemplate.replace("stocksOverview", stocksOverview);
+    frontPageTemplate.replace(
+      "freeCashFlows",
+      this.stocksFreeCashFlowTemplate(formattedStockSummaries)
+    );
 
     return frontPageTemplate.getContent();
   }
@@ -39,8 +44,73 @@ export class StockSummariesViewImpl implements StockSummariesView {
         "marketValue",
         formattedStockSummary.marketValue || "Gunk"
       );
+
       result += stockTemplate.getContent();
     }
+
     return result;
+  }
+
+  private stocksFreeCashFlowTemplate(
+    formattedStockSummaries: FormattedStockSummary[]
+  ) {
+    const years = this.years(
+      formattedStockSummaries.at(0)?.freeCashFlows || []
+    );
+
+    const freeCashFlows = this.freeCashFlows(formattedStockSummaries || []);
+
+    const freeCashFlowsTemplate = ViewTemplate.create(
+      `${__dirname}/../../../public/freeCashFlows.html`
+    );
+
+    freeCashFlowsTemplate.replace("years", years);
+    freeCashFlowsTemplate.replace("freeCashFlows", freeCashFlows);
+    return freeCashFlowsTemplate.getContent();
+  }
+
+  private years(formattedFreeCashFlows: FormattedFreeCashFlow[]) {
+    let years = "";
+    for (const freeCashFlow of formattedFreeCashFlows || []) {
+      const thTemplate = ViewTemplate.create(
+        `${__dirname}/../../../public/th.html`
+      );
+
+      thTemplate.replace("value", freeCashFlow.year?.toString() || "Gunk");
+
+      years += thTemplate.getContent();
+    }
+    return years;
+  }
+
+  private freeCashFlows(formattedStockSummaries: FormattedStockSummary[]) {
+    let stocksCashFlow = "";
+    for (const formattedStockSummary of formattedStockSummaries) {
+      const thTemplate = ViewTemplate.create(
+        `${__dirname}/../../../public/td.html`
+      );
+
+      thTemplate.replace("value", formattedStockSummary.ticket || "Gunk!");
+      let stockFreeCashFlow = thTemplate.getContent();
+
+      for (const freeCashFlow of formattedStockSummary.freeCashFlows || []) {
+        const thTemplate = ViewTemplate.create(
+          `${__dirname}/../../../public/td.html`
+        );
+
+        thTemplate.replace("value", freeCashFlow.value?.toString() || "Gunk");
+
+        stockFreeCashFlow += thTemplate.getContent();
+      }
+
+      const trTemplate = ViewTemplate.create(
+        `${__dirname}/../../../public/tr.html`
+      );
+
+      trTemplate.replace("value", stockFreeCashFlow);
+
+      stocksCashFlow += trTemplate.getContent();
+    }
+    return stocksCashFlow;
   }
 }
