@@ -66,10 +66,7 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
       sum = sum?.plus(values[i]);
     }
 
-    console.log("sum", sum);
-    const division = sum.divide(values.length);
-    console.log("division", division);
-    return division;
+    return sum.divide(values.length);
   }
 
   summarizeStock(stock: Stock, freeCashFlows: PerformanceValue[]) {
