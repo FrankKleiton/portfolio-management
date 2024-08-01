@@ -21,6 +21,7 @@ scraps the cashflow data and persist in the database
 from the database instead of statusinvest
 [x] Associate all the data to the user logged in
 [x] Add docker and docker-compose file
+[x] Apply composite pattern on the view to clean up the code
 
 
 
