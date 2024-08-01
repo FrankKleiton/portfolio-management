@@ -93,7 +93,7 @@ describe("StockSummariesUseCase", () => {
       });
       test("sort by year", async () => {
         const cashFlows = await useCase.getOrderedCashFlows("VALE3");
-        expect(cashFlows.at(0)?.year.equals(new Year(2020))).toBeTruthy();
+        expect(cashFlows.at(0)?.year.equals(new Year(2021))).toBeTruthy();
       });
     });
   });

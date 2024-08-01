@@ -11,12 +11,11 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
   async getOrderedCashFlows(ticket: string): Promise<CashFlow[]> {
     let cashFlows = await Context.webScraperGateway.collectCashFlows(ticket);
 
-    console.log(cashFlows);
     cashFlows = cashFlows.sort((a, b) => {
-      if (a.year.equals(b.year)) {
+      if (b.year.equals(a.year)) {
         return 0;
       }
-      if (a.year.greaterThen(b.year)) {
+      if (b.year.greaterThen(a.year)) {
         return 1;
       }
       return -1;
