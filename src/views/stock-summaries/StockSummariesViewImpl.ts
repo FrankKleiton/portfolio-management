@@ -76,7 +76,7 @@ export class StockSummariesViewImpl implements StockSummariesView {
         `${__dirname}/../../../public/th.html`
       );
 
-      thTemplate.replace("value", freeCashFlow.year?.toString() || "Gunk");
+      thTemplate.replace("value", freeCashFlow.period?.toString() || "Gunk");
 
       years += thTemplate.getContent();
     }

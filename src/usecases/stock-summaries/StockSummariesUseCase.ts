@@ -12,10 +12,10 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
     let cashFlows = await Context.webScraperGateway.collectCashFlows(ticket);
 
     cashFlows = cashFlows.sort((a, b) => {
-      if (b.year.equals(a.year)) {
+      if (b.period.equals(a.period)) {
         return 0;
       }
-      if (b.year.greaterThen(a.year)) {
+      if (b.period.greaterThen(a.period)) {
         return 1;
       }
       return -1;
@@ -26,7 +26,7 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
 
   calculateFreeCashFlows(cashFlows: CashFlow[]) {
     return cashFlows.map(
-      (cf) => new PerformanceValue(cf.operational + cf.investing, cf.year)
+      (cf) => new PerformanceValue(cf.operational + cf.investing, cf.period)
     );
   }
 

@@ -1,5 +1,5 @@
 import { PerformanceValue } from "../../../src/entities/PerformanceValue";
-import { Year } from "../../../src/entities/Year";
+import { Period } from "../../../src/entities/Period";
 import { StockSummariesPresenter } from "../../../src/presenters/stock-summaries/StockSummariesPresenter";
 import { StockSummariesResponseModel } from "../../../src/usecases/stock-summaries/StockSummariesResponseModel";
 import { StockSummary } from "../../../src/usecases/stock-summaries/StockSummary";
@@ -31,7 +31,7 @@ describe("StockPresenter", () => {
     stockSummary.ticket = "VALE3";
     stockSummary.marketValue = 1000000;
     stockSummary.freeCashFlows = [
-      new PerformanceValue(1000000, new Year(2021)),
+      new PerformanceValue(1000000, new Period(2021)),
     ];
 
     responseModel.addStockSummary(stockSummary);

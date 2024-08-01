@@ -1,4 +1,4 @@
-import { Year } from "./Year";
+import { Period } from "./Period";
 class NumericParser {
   parse(value: string) {
     const amounts: { [key: string]: number } = {
@@ -13,12 +13,12 @@ class NumericParser {
   }
 }
 export class PerformanceValue {
-  constructor(public value: number, public year: Year) {}
+  constructor(public value: number, public period: Period) {}
 
   equals(performanceValue: PerformanceValue) {
     return (
       this.value == performanceValue.value &&
-      this.year.equals(performanceValue.year)
+      this.period.equals(performanceValue.period)
     );
   }
 }

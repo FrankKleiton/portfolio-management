@@ -5,7 +5,7 @@ import fs from "node:fs";
 import { Stock } from "../entities/Stock";
 import { WebScraperGateway } from "../usecases/WebScraperGateway";
 import { CashFlow } from "../entities/CashFlow";
-import { Year } from "../entities/Year";
+import { Period } from "../entities/Period";
 import { Numeric } from "../utils/Numeric";
 
 async function html(ticket: string) {
@@ -96,12 +96,12 @@ export class StatusInvestWebScraper implements WebScraperGateway {
     const investingValues = getTableValues(investingValuesTd);
 
     return years.map((value, i) => {
-      const year = new Year(value);
+      const period = new Period(value);
 
       return new CashFlow(
         Numeric.parse(operationalValues[i]),
         Numeric.parse(investingValues[i]),
-        year
+        period
       );
     });
   }

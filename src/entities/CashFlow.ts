@@ -1,9 +1,9 @@
-import { Year } from "./Year";
+import { Period } from "./Period";
 
 export class CashFlow {
   constructor(
     public operational: number,
     public investing: number,
-    public year: Year
+    public period: Period
   ) {}
 }
