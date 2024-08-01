@@ -42,7 +42,11 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
       if (stock) {
         const cashFlows = await this.getOrderedCashFlows(ticket);
         const freeCashFlows = this.calculateFreeCashFlows(cashFlows);
+        const averageFreeCashFlow = this.calculateAverage(freeCashFlows);
 
+        if (averageFreeCashFlow) {
+          freeCashFlows.push(averageFreeCashFlow);
+        }
         responseModel.addStockSummary(
           this.summarizeStock(stock, freeCashFlows)
         );
@@ -50,6 +54,22 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
     }
 
     presenter.present(responseModel);
+  }
+  calculateAverage(values: PerformanceValue[]) {
+    let sum = values.at(0);
+
+    if (!sum) {
+      return null;
+    }
+
+    for (let i = 1; i < values.length; i++) {
+      sum = sum?.plus(values[i]);
+    }
+
+    console.log("sum", sum);
+    const division = sum.divide(values.length);
+    console.log("division", division);
+    return division;
   }
 
   summarizeStock(stock: Stock, freeCashFlows: PerformanceValue[]) {

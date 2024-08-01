@@ -38,27 +38,49 @@ describe("StockSummariesUseCase", () => {
     });
 
     describe("given one stock summaries", () => {
-      test("one stock is presented", async () => {
+      beforeEach(async () => {
         await inMemoryDatabaseGateway().saveTicket("VALE3");
-        await inMemoryWebScraperGateway().addStock(
-          new Stock("VALE3", 1000, 100, -10)
-        );
+        await inMemoryWebScraperGateway().addStock(new Stock("VALE3", 1000));
         await inMemoryWebScraperGateway().addCashFlow(
           "VALE3",
           new CashFlow(1000, -100, new Period(2020))
         );
+      });
+      test("one stock is presented", async () => {
         await useCase.summarizeStocks(presenterSpy);
 
         const summaries = presenterSpy.responseModel?.getStockSummaries();
+        const summary = summaries?.at(0);
+        const firstValue = summary?.freeCashFlows?.at(0);
+        const lastValue = summary?.freeCashFlows?.at(1);
+
+        const expected = new PerformanceValue(900, new Period(2020));
+
         expect(summaries).toHaveLength(1);
-        expect(summaries?.at(0)?.marketValue).toBe(1000);
-        expect(summaries?.at(0)?.ticket).toBe("VALE3");
-        expect(
-          summaries
-            ?.at(0)
-            ?.freeCashFlows?.at(0)
-            ?.equals(new PerformanceValue(900, new Period(2020)))
-        ).toBeTruthy();
+        expect(summary?.marketValue).toBe(1000);
+        expect(summary?.ticket).toBe("VALE3");
+        expect(firstValue?.equals(expected)).toBeTruthy();
+        expect(lastValue?.equals(expected)).toBeTruthy();
+      });
+
+      test("average free cash flow", async () => {
+        await inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(1000, -100, new Period(2021))
+        );
+        await inMemoryWebScraperGateway().addCashFlow(
+          "VALE3",
+          new CashFlow(10000, -1000, new Period(2022))
+        );
+        await useCase.summarizeStocks(presenterSpy);
+
+        const summaries = presenterSpy.responseModel?.getStockSummaries();
+        const summary = summaries?.at(0);
+        const lastValue = summary?.freeCashFlows?.at(-1);
+
+        const expected = new PerformanceValue(3600, new Period(2022, 2020));
+
+        expect(lastValue?.equals(expected)).toBeTruthy();
       });
     });
   });

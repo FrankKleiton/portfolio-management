@@ -17,5 +17,5 @@ export class FormattedStockSummary {
 
 export class FormattedFreeCashFlow {
   public value?: string;
-  public period?: number;
+  public period?: string;
 }

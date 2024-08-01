@@ -44,7 +44,11 @@ export class StockSummariesPresenter implements StockSummariesOutputBoundary {
       formattedStockSummary.freeCashFlows = stock.freeCashFlows.map((sf) => {
         const formattedFreeCashFlow = new FormattedFreeCashFlow();
         formattedFreeCashFlow.value = StockSummariesPresenter.format(sf.value);
-        formattedFreeCashFlow.period = sf.period.value;
+        formattedFreeCashFlow.period = sf.period.start.toString();
+
+        if (sf.period.end) {
+          formattedFreeCashFlow.period += `-${sf.period.end}`;
+        }
         return formattedFreeCashFlow;
       });
     }

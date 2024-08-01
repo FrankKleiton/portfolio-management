@@ -32,6 +32,7 @@ describe("StockPresenter", () => {
     stockSummary.marketValue = 1000000;
     stockSummary.freeCashFlows = [
       new PerformanceValue(1000000, new Period(2021)),
+      new PerformanceValue(1000000, new Period(2021, 2022)),
     ];
 
     responseModel.addStockSummary(stockSummary);
@@ -45,5 +46,7 @@ describe("StockPresenter", () => {
     expect(formattedStock?.ticket).toBe("VALE3");
     expect(formattedStock?.marketValue).toBe(`R$ 1.000.000,00`);
     expect(formattedStock?.freeCashFlows?.at(0)?.value).toBe("R$ 1.000.000,00");
+    expect(formattedStock?.freeCashFlows?.at(0)?.period).toBe("2021");
+    expect(formattedStock?.freeCashFlows?.at(1)?.period).toBe("2021-2022");
   });
 });

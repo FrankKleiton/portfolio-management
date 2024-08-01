@@ -1,8 +1,8 @@
 export class Period {
-  constructor(private start: number, private end: number = 0) {}
+  constructor(public start: number, public end: number = 0) {}
 
-  get value() {
-    return this.start;
+  plus(period: Period): Period {
+    return new Period(this.start, period.start);
   }
 
   equals(period: Period) {
