@@ -41,7 +41,10 @@ describe("StockSummariesUseCase", () => {
 
   describe("given one stock summary", () => {
     beforeEach(async () => {
-      const cashFlow = new CashFlow(1000, -100, Period.simple(2020));
+      const cashFlow = new CashFlow(
+        new PerformanceValue(1000, Period.simple(2020)),
+        new PerformanceValue(-100, Period.simple(2020))
+      );
       await databaseGateway.saveTicket("VALE3");
       await webScraperGateway.addStock(new Stock("VALE3", 1000));
       await webScraperGateway.addCashFlow("VALE3", cashFlow);
@@ -77,8 +80,14 @@ describe("StockSummariesUseCase", () => {
 
     describe("given multiple cashflows", () => {
       beforeEach(async () => {
-        const nineHundred = new CashFlow(1000, -100, Period.simple(2021));
-        const nineThousand = new CashFlow(10000, -1000, Period.simple(2022));
+        const nineHundred = new CashFlow(
+          new PerformanceValue(1000, Period.simple(2021)),
+          new PerformanceValue(-100, Period.simple(2021))
+        );
+        const nineThousand = new CashFlow(
+          new PerformanceValue(10000, Period.simple(2022)),
+          new PerformanceValue(-1000, Period.simple(2022))
+        );
         await webScraperGateway.addCashFlow("VALE3", nineHundred);
         await webScraperGateway.addCashFlow("VALE3", nineThousand);
       });

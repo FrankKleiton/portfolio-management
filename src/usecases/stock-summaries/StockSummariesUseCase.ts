@@ -25,9 +25,7 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
   }
 
   calculateFreeCashFlows(cashFlows: CashFlow[]) {
-    return cashFlows.map(
-      (cf) => new PerformanceValue(cf.operational + cf.investing, cf.period)
-    );
+    return cashFlows.map((cf) => cf.operational.plus(cf.investing));
   }
 
   async summarizeStocks(

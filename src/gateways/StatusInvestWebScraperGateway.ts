@@ -6,6 +6,7 @@ import { WebScraperGateway } from "../usecases/WebScraperGateway";
 import { CashFlow } from "../entities/CashFlow";
 import { Period } from "../entities/Period";
 import { Numeric } from "../utils/Numeric";
+import { PerformanceValue } from "../entities/PerformanceValue";
 
 async function html(ticket: string) {
   let browser: Browser | null = null;
@@ -98,9 +99,8 @@ export class StatusInvestWebScraper implements WebScraperGateway {
       const period = Period.simple(value);
 
       return new CashFlow(
-        Numeric.parse(operationalValues[i]),
-        Numeric.parse(investingValues[i]),
-        period
+        new PerformanceValue(Numeric.parse(operationalValues[i]), period),
+        new PerformanceValue(Numeric.parse(investingValues[i]), period)
       );
     });
   }
