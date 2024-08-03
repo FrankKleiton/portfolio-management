@@ -1,6 +1,5 @@
 import cheerio from "cheerio";
 import puppeteer, { Browser } from "puppeteer";
-import fs from "node:fs";
 
 import { Stock } from "../entities/Stock";
 import { WebScraperGateway } from "../usecases/WebScraperGateway";
@@ -96,7 +95,7 @@ export class StatusInvestWebScraper implements WebScraperGateway {
     const investingValues = getTableValues(investingValuesTd);
 
     return years.map((value, i) => {
-      const period = new Period(value);
+      const period = Period.simple(value);
 
       return new CashFlow(
         Numeric.parse(operationalValues[i]),

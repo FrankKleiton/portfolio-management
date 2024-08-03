@@ -31,8 +31,8 @@ describe("StockPresenter", () => {
     stockSummary.ticket = "VALE3";
     stockSummary.marketValue = 1000000;
     stockSummary.freeCashFlows = [
-      new PerformanceValue(1000000, new Period(2021)),
-      new PerformanceValue(1000000, new Period(2021, 2022)),
+      new PerformanceValue(1000000, Period.simple(2021)),
+      new PerformanceValue(1000000, Period.compound(2021, 2022)),
     ];
 
     responseModel.addStockSummary(stockSummary);
