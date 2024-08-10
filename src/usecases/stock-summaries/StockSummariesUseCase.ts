@@ -4,30 +4,10 @@ import { Stock } from "../../entities/Stock";
 import { StockSummariesOutputBoundary } from "./StockSummariesOutputBoundary";
 import { StockSummariesResponseModel } from "./StockSummariesResponseModel";
 import { StockSummary } from "./StockSummary";
-import { CashFlow } from "../../entities/CashFlow";
-import { PerformanceValue } from "../../entities/PerformanceValue";
+import { CorporateAccounting } from "../../entities/CorporateAccounting";
+import { FinancialAnalysis } from "../../entities/FinancialAnalysis";
 
 export class StockSummariesUseCase implements StockSummariesInputBoundary {
-  async getOrderedCashFlows(ticket: string): Promise<CashFlow[]> {
-    let cashFlows = await Context.webScraperGateway.collectCashFlows(ticket);
-
-    cashFlows = cashFlows.sort((a, b) => {
-      if (b.period.equals(a.period)) {
-        return 0;
-      }
-      if (b.period.greaterThen(a.period)) {
-        return 1;
-      }
-      return -1;
-    });
-
-    return cashFlows;
-  }
-
-  calculateFreeCashFlows(cashFlows: CashFlow[]) {
-    return cashFlows.map((cf) => cf.operational.plus(cf.investing));
-  }
-
   async summarizeStocks(
     presenter: StockSummariesOutputBoundary
   ): Promise<void> {
@@ -38,40 +18,28 @@ export class StockSummariesUseCase implements StockSummariesInputBoundary {
       const stock = await Context.webScraperGateway.collectStock(ticket);
 
       if (stock) {
-        const cashFlows = await this.getOrderedCashFlows(ticket);
-        const freeCashFlows = this.calculateFreeCashFlows(cashFlows);
-        const averageFreeCashFlow = this.calculateAverage(freeCashFlows);
-
-        if (averageFreeCashFlow) {
-          freeCashFlows.push(averageFreeCashFlow);
-        }
-        responseModel.addStockSummary(
-          this.summarizeStock(stock, freeCashFlows)
+        const cashFlows = await Context.webScraperGateway.collectCashFlows(
+          ticket
         );
+
+        const analysis = CorporateAccounting.analyse(
+          cashFlows,
+          stock.marketValue
+        );
+
+        responseModel.addStockSummary(this.summarizeStock(stock, analysis));
       }
     }
 
     presenter.present(responseModel);
   }
-  calculateAverage(values: PerformanceValue[]) {
-    let sum = values.at(0);
 
-    if (!sum) {
-      return null;
-    }
-
-    for (let i = 1; i < values.length; i++) {
-      sum = sum?.plus(values[i]);
-    }
-
-    return sum.divide(values.length);
-  }
-
-  summarizeStock(stock: Stock, freeCashFlows: PerformanceValue[]) {
+  summarizeStock(stock: Stock, financialReport: FinancialAnalysis) {
     const summary = new StockSummary();
     summary.marketValue = stock.marketValue;
     summary.ticket = stock.ticket;
-    summary.freeCashFlows = freeCashFlows;
+    summary.freeCashFlows = financialReport.freeCashFlows;
+    summary.freeCashFlowsYields = financialReport.freeCashFlowsYields;
     return summary;
   }
 }

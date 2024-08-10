@@ -10,12 +10,16 @@ export class StockSummariesViewModel {
 }
 
 export class FormattedStockSummary {
-  public ticket?: string;
-  public marketValue?: string;
-  public freeCashFlows?: FormattedFreeCashFlow[];
+  public ticket: string = "";
+  public marketValue: string = "";
+  public freeCashFlows: FormattedFreeCashFlow[] = [];
+
+  get periods() {
+    return this.freeCashFlows.map((fcf) => fcf.period);
+  }
 }
 
 export class FormattedFreeCashFlow {
-  public value?: string;
-  public period?: string;
+  public value: string = "";
+  public period: string = "";
 }

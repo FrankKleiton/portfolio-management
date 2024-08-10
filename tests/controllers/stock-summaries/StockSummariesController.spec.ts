@@ -11,8 +11,9 @@ describe("StockSummariesController", () => {
   let presenter: StockSummariesPresenterSpy;
   let controller: StockSummariesController;
   let view: StockSummariesViewImplSpy;
+  let result: string;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     const responseModel = new StockSummariesResponseModel();
     responseModel.addStockSummary(new StockSummary());
     responseModel.addStockSummary(new StockSummary());
@@ -24,23 +25,21 @@ describe("StockSummariesController", () => {
     presenter = new StockSummariesPresenterSpy();
     view = new StockSummariesViewImplSpy();
     controller = new StockSummariesController(useCase, presenter, view);
+
+    result = await controller.handle(new Request());
   });
   test("usecase boundary", async () => {
-    await controller.handle(new Request());
-
     expect(useCase.wasExecuted).toBeTruthy();
   });
 
   test("presenter boundary", async () => {
-    await controller.handle(new Request());
-
     expect(presenter.getViewModel()?.getFormattedStockSummaries()).toHaveLength(
       3
     );
   });
 
   test("view boundary", async () => {
-    expect(await controller.handle(new Request())).toBe("");
+    expect(result).toBe("");
     expect(presenter.getViewModel()).toBe(view.getViewModel());
   });
 });

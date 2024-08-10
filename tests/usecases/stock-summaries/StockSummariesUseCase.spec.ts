@@ -70,11 +70,19 @@ describe("StockSummariesUseCase", () => {
       });
 
       test("got correct free cash flow", async () => {
-        expect(getFirstCashFlow()?.equals(expected)).toBeTruthy();
+        expect(getFirstFreeCashFlow()?.equals(expected)).toBeTruthy();
       });
 
       test("last free cash flow is an average", () => {
-        expect(getLastCashFlow()?.equals(expected)).toBeTruthy();
+        expect(getLastFreeCashFlow()?.equals(expected)).toBeTruthy();
+      });
+
+      test("got correct free cash flow yield", () => {
+        expect(
+          getFirstFreeCashFlowYield()?.equals(
+            new PerformanceValue(0.9, Period.simple(2020))
+          )
+        ).toBeTruthy();
       });
     });
 
@@ -100,7 +108,7 @@ describe("StockSummariesUseCase", () => {
           Period.compound(2022, 2020)
         );
 
-        expect(getLastCashFlow()?.equals(expected)).toBeTruthy();
+        expect(getLastFreeCashFlow()?.equals(expected)).toBeTruthy();
       });
     });
 
@@ -109,11 +117,15 @@ describe("StockSummariesUseCase", () => {
       return summaries?.at(0);
     };
 
-    const getFirstCashFlow = () => {
+    const getFirstFreeCashFlowYield = () => {
+      return getFirstSummary()?.freeCashFlowsYields?.at(0);
+    };
+
+    const getFirstFreeCashFlow = () => {
       return getFirstSummary()?.freeCashFlows?.at(0);
     };
 
-    const getLastCashFlow = () => {
+    const getLastFreeCashFlow = () => {
       return getFirstSummary()?.freeCashFlows?.at(-1);
     };
   });

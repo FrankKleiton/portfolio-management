@@ -1,5 +1,6 @@
+import { ViewUtils } from "../ViewUtils";
 import { StockSummariesViewModel } from "./StockSummariesViewModel";
 
-export interface StockSummariesView {
-  generateView(viewModel: StockSummariesViewModel): string;
+export abstract class StockSummariesView extends ViewUtils {
+  abstract generateView(viewModel: StockSummariesViewModel): string;
 }
